@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GRPC_Service";
+
+package productCDSDTO;
+
+service ProductCDSDTO {
+  rpc GetProductCDSDTOInfo(ProductCDSDTOLookUpModel) returns (ProductCDSDTOModel);
+}
+
+// Request
+message ProductCDSDTOLookUpModel {
+  int32 Barcode = 1;
+}
+
+// Response
+message ProductCDSDTOModel {
+	int32 Id = 1;
+	int32 Barcode = 2;
+	double PurchasePrice = 3;
+	string Name = 4;
+}

@@ -1,15 +1,17 @@
-﻿using Grpc.Core;
-using services.EnterpriseServices;
-using data.EnterpriseData;
+﻿using data.EnterpriseData;
+using Grpc.Core;
+using GRPC_Service;
 using Microsoft.Extensions.Logging;
-using GRPC_Server;
-/**
-* Service für Customer
-*/
+using services.EnterpriseServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace GRPC_Service.Services
+namespace grpcServiceStore.Services
 {
-    public class ProductGrpcService : ProductDTO.ProductDTOBase
+    internal class ProductGrpcService : ProductCDSDTO.ProductCDSDTOBase
     {
         private readonly ILogger<ProductGrpcService> _logger;
         private ProductService service;
@@ -20,11 +22,11 @@ namespace GRPC_Service.Services
             this._logger = logger;
         }
 
-        public override Task<ProductDTOModel> GetProductDTOInfo(ProductDTOLookUpModel request, ServerCallContext context)
+        public override Task<ProductCDSDTOModel> GetProductCDSDTOInfo(ProductCDSDTOLookUpModel request, ServerCallContext context)
         {
             try
             {
-                ProductDTOModel output = new ProductDTOModel();
+                ProductCDSDTOModel output = new ProductCDSDTOModel();
 
                 Product product = service.getProductByBarcode(request.Barcode);
                 if (product == null)
@@ -39,7 +41,8 @@ namespace GRPC_Service.Services
                 output.PurchasePrice = product.PurchasePrice;
 
                 return Task.FromResult(output);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 this._logger.LogError(ex.ToString());
                 throw new RpcException(Status.DefaultCancelled);

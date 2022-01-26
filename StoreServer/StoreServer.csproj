@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
+	
   <ItemGroup>
     <None Remove="Protos\productDTO.proto" />
   </ItemGroup>
@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\grpcServiceEnterprise\grpcServiceEnterprise.csproj" />
+	<ProjectReference Include="..\grpcServiceStore\grpcServiceStore.csproj" />
   </ItemGroup>
 
 	<ItemGroup>

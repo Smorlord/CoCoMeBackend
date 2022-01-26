@@ -18,8 +18,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CashDesk System", "CashDesk System", "{7845E847-40F1-4778-B8EC-690B319F8F7F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashDeskPC", "CashDeskPC\CashDeskPC.csproj", "{EADD626F-E47F-4CEE-AECE-7DA1BE2490E4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{035A6313-42EF-434E-9636-D91B515E0439} = {035A6313-42EF-434E-9636-D91B515E0439}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreServer", "StoreServer\StoreServer.csproj", "{035A6313-42EF-434E-9636-D91B515E0439}"
+	ProjectSection(ProjectDependencies) = postProject
+		{45740F85-873C-476D-8D66-B475DA8FA0C7} = {45740F85-873C-476D-8D66-B475DA8FA0C7}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "module", "module", "{A2996E38-DA20-4BA2-90E0-E54E9202CED0}"
 EndProject
@@ -31,7 +37,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mockService", "mockService\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mockServiceConnector", "mockServiceConnector\mockServiceConnector.csproj", "{B238C156-663C-4A8F-8CFF-A796533F003A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cashDeskService", "cashDeskService\cashDeskService.csproj", "{8A9BE200-AFD2-487A-A9C1-3712E330DB96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cashDeskService", "cashDeskService\cashDeskService.csproj", "{8A9BE200-AFD2-487A-A9C1-3712E330DB96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "grpcServiceStore", "grpcServiceStore\grpcServiceStore.csproj", "{45740F85-873C-476D-8D66-B475DA8FA0C7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{98667586-6C31-48E1-A7DC-09BC12A5FBDF} = {98667586-6C31-48E1-A7DC-09BC12A5FBDF}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreServices", "StoreServices\StoreServices.csproj", "{98667586-6C31-48E1-A7DC-09BC12A5FBDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +88,14 @@ Global
 		{8A9BE200-AFD2-487A-A9C1-3712E330DB96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A9BE200-AFD2-487A-A9C1-3712E330DB96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A9BE200-AFD2-487A-A9C1-3712E330DB96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45740F85-873C-476D-8D66-B475DA8FA0C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45740F85-873C-476D-8D66-B475DA8FA0C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45740F85-873C-476D-8D66-B475DA8FA0C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45740F85-873C-476D-8D66-B475DA8FA0C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98667586-6C31-48E1-A7DC-09BC12A5FBDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98667586-6C31-48E1-A7DC-09BC12A5FBDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98667586-6C31-48E1-A7DC-09BC12A5FBDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98667586-6C31-48E1-A7DC-09BC12A5FBDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +113,8 @@ Global
 		{743DECB6-7D94-4569-A536-78693A5852CC} = {A2996E38-DA20-4BA2-90E0-E54E9202CED0}
 		{B238C156-663C-4A8F-8CFF-A796533F003A} = {A2996E38-DA20-4BA2-90E0-E54E9202CED0}
 		{8A9BE200-AFD2-487A-A9C1-3712E330DB96} = {A2996E38-DA20-4BA2-90E0-E54E9202CED0}
+		{45740F85-873C-476D-8D66-B475DA8FA0C7} = {65F10399-3F53-4A21-9CA7-3007B446B6C3}
+		{98667586-6C31-48E1-A7DC-09BC12A5FBDF} = {65F10399-3F53-4A21-9CA7-3007B446B6C3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {794386E4-60BD-4CEB-B327-AAD4B4D67E0E}

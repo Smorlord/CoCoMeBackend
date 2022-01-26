@@ -29,7 +29,7 @@ if (app.Environment.IsDevelopment())
 startup.Configure(app, app.Lifetime);
 
 // The port number must match the port of the gRPC server.
-using var channel = GrpcChannel.ForAddress("https://localhost:7244");
+using var channel = GrpcChannel.ForAddress("https://localhost:7244"); 
 var client = new ProductDTO.ProductDTOClient(channel);
 var reply = await client.GetProductDTOInfoAsync(
                     new ProductDTOLookUpModel { Barcode = 1111 });
