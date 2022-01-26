@@ -1,4 +1,8 @@
-﻿namespace CashDeskPC
+﻿
+using cashDeskService.Cashbox;
+using mockServiceConnector;
+
+namespace CashDeskPC
 {
     public class Startup
     {
@@ -13,10 +17,11 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            /*services.AddSingleton<ApplicationService, ApplicationServiceImplementation>();
-            services.AddSingleton<LightDisplayService, LightDisplayServiceImplementation>();
+            services.AddSingleton<MockServiceConnector, MockServiceConnectorImplementation>();
+            services.AddSingleton<ICashboxService, CashboxServiceImplementation>();
+            /*services.AddSingleton<LightDisplayService, LightDisplayServiceImplementation>();
             services.AddSingleton<CardReaderService, CardReaderServiceImplementation>();
-            services.AddSingleton<CashBoxService, CashBoxServiceImplemenation>();
+            
             services.AddSingleton<CashDeskGUIService, CashDeskGUIServiceImplemenation>();
             services.AddSingleton<PrinterService, PrinterServiceImplementation>();
             services.AddSingleton<ScannerService, ScannerServiceImplementation>();*/

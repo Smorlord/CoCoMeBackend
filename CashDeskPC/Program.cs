@@ -1,4 +1,6 @@
 using CashDeskPC;
+using cashDeskService.Cashbox;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,4 +27,8 @@ if (app.Environment.IsDevelopment())
 // Call Configure(), passing in the dependencies
 startup.Configure(app, app.Lifetime);
 
+app.Services.GetRequiredService<ICashboxService>().init();
+
 app.Run();
+
+

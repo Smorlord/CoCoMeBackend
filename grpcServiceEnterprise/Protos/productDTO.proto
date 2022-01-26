@@ -19,4 +19,13 @@ message ProductDTOModel {
 	int32 Barcode = 2;
 	double PurchasePrice = 3;
 	string Name = 4;
+	repeated ProductSuppliertDTOModel productSuppliertDTOModel = 5;
+}
+
+
+message ProductSuppliertDTOModel {
+	int32 Id = 1;
+	int32 Barcode = 2;
+	double PurchasePrice = 3;
+	string Name = 4;
 }
