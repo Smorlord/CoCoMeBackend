@@ -1,5 +1,10 @@
 ﻿
+using cashDeskService.BankServer;
+using cashDeskService.BarcodeScanner;
+using cashDeskService.CardReader;
 using cashDeskService.Cashbox;
+using cashDeskService.Display;
+using cashDeskService.Printer;
 using mockServiceConnector;
 
 namespace CashDeskPC
@@ -19,12 +24,11 @@ namespace CashDeskPC
             services.AddControllers();
             services.AddSingleton<MockServiceConnector, MockServiceConnectorImplementation>();
             services.AddSingleton<ICashboxService, CashboxServiceImplementation>();
-            /*services.AddSingleton<LightDisplayService, LightDisplayServiceImplementation>();
-            services.AddSingleton<CardReaderService, CardReaderServiceImplementation>();
-            
-            services.AddSingleton<CashDeskGUIService, CashDeskGUIServiceImplemenation>();
-            services.AddSingleton<PrinterService, PrinterServiceImplementation>();
-            services.AddSingleton<ScannerService, ScannerServiceImplementation>();*/
+            services.AddSingleton<IDisplayService, DisplayServiceImplementation>();
+            services.AddSingleton<ICardReaderService, CardReaderServiceImplementation>();
+            services.AddSingleton<IPrinterService, PrinterServiceImplementation>();
+            services.AddSingleton<IBarcodeScannerService, BarcodeScannerServiceImplementation>();
+            services.AddSingleton<IBankService, BankServiceImplementation>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

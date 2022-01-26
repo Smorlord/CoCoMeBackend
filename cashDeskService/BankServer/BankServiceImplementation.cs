@@ -1,27 +1,38 @@
-﻿using System;
+﻿using mockServiceConnector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TestConsole;
+using TestConsole.BankServer;
 
 namespace cashDeskService.BankServer
 {
     public class BankServiceImplementation : IBankService
     {
-        public void authorizePayment(string contextId, string data, string token)
-        {
-            throw new NotImplementedException();
-        }
 
-        public TransactionContext createContext(int amount)
+        private MockServiceConnector mockServiceConnector;
+        private BankServerClient bankServerClient;
+
+        public BankServiceImplementation(MockServiceConnector mockService)
         {
-            throw new NotImplementedException();
+            this.mockServiceConnector = mockService;
         }
 
         public void init()
         {
-            throw new NotImplementedException();
+            bankServerClient = mockServiceConnector.GetBankServerClient();
+        }
+
+        public void authorizePayment(string contextId, string data, string token)
+        {
+            bankServerClient.AuthorizePayment(contextId, data, token);
+        }
+
+        public TransactionContext createContext(int amount)
+        {
+            return bankServerClient.CreateContext(amount);
         }
     }
 }

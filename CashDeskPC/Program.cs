@@ -1,5 +1,11 @@
 using CashDeskPC;
+using cashDeskService.BankServer;
+using cashDeskService.BarcodeScanner;
+using cashDeskService.CardReader;
 using cashDeskService.Cashbox;
+using cashDeskService.Display;
+using cashDeskService.Printer;
+
 using Grpc.Net.Client;
 using GRPC_Client;
 
@@ -38,6 +44,11 @@ Console.WriteLine("Press any key to exit...");
 Console.ReadKey();
 
 app.Services.GetRequiredService<ICashboxService>().init();
+app.Services.GetRequiredService<IBankService>().init();
+app.Services.GetRequiredService<IBarcodeScannerService>().init();
+app.Services.GetRequiredService<ICardReaderService>().init();
+app.Services.GetRequiredService<IDisplayService>().init();
+app.Services.GetRequiredService<IPrinterService>().init();
 
 app.Run();
 
