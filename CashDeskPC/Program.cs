@@ -1,6 +1,10 @@
 using CashDeskPC;
+using cashDeskService.BankServer;
+using cashDeskService.BarcodeScanner;
+using cashDeskService.CardReader;
 using cashDeskService.Cashbox;
-
+using cashDeskService.Display;
+using cashDeskService.Printer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +32,11 @@ if (app.Environment.IsDevelopment())
 startup.Configure(app, app.Lifetime);
 
 app.Services.GetRequiredService<ICashboxService>().init();
+app.Services.GetRequiredService<IBankService>().init();
+app.Services.GetRequiredService<IBarcodeScannerService>().init();
+app.Services.GetRequiredService<ICardReaderService>().init();
+app.Services.GetRequiredService<IDisplayService>().init();
+app.Services.GetRequiredService<IPrinterService>().init();
 
 app.Run();
 
