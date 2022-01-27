@@ -1,4 +1,5 @@
 ﻿
+using cashDeskGrpcClient;
 using cashDeskService.BankServer;
 using cashDeskService.BarcodeScanner;
 using cashDeskService.CardReader;
@@ -23,6 +24,7 @@ namespace CashDeskPC
         {
             services.AddControllers();
             services.AddSingleton<MockServiceConnector, MockServiceConnectorImplementation>();
+            services.AddSingleton<IGrpcClientConnector, GrpcClientConnectorImplementation>();
             services.AddSingleton<ICashboxService, CashboxServiceImplementation>();
             services.AddSingleton<IDisplayService, DisplayServiceImplementation>();
             services.AddSingleton<ICardReaderService, CardReaderServiceImplementation>();

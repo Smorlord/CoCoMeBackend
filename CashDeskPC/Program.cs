@@ -35,13 +35,13 @@ if (app.Environment.IsDevelopment())
 startup.Configure(app, app.Lifetime);
 
 // The port number must match the port of the gRPC server
-using var channel = GrpcChannel.ForAddress("https://localhost:7244");
+/*using var channel = GrpcChannel.ForAddress("https://localhost:7244");
 var client = new ProductCDSDTO.ProductCDSDTOClient(channel);
 var reply = await client.GetProductCDSDTOInfoAsync(
                     new ProductCDSDTOLookUpModel { Barcode = 1111 });
 Console.WriteLine("Product: " + reply);
 Console.WriteLine("Press any key to exit...");
-Console.ReadKey();
+Console.ReadKey();*/
 
 app.Services.GetRequiredService<ICashboxService>().init();
 app.Services.GetRequiredService<IBankService>().init();

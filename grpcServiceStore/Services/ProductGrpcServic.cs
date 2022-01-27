@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace grpcServiceStore.Services
 {
-    internal class ProductGrpcService : ProductCDSDTO.ProductCDSDTOBase
+    public class ProductGrpcService : ProductScannedDTO.ProductScannedDTOBase
     {
         private readonly ILogger<ProductGrpcService> _logger;
         private ProductService service;
@@ -22,11 +22,11 @@ namespace grpcServiceStore.Services
             this._logger = logger;
         }
 
-        public override Task<ProductCDSDTOModel> GetProductCDSDTOInfo(ProductCDSDTOLookUpModel request, ServerCallContext context)
+        public override Task<ProductScannedDTOModel> GetProductScannedDTOInfo(ProductScannedDTOLookUpModel request, ServerCallContext context)
         {
             try
             {
-                ProductCDSDTOModel output = new ProductCDSDTOModel();
+                ProductScannedDTOModel output = new ProductScannedDTOModel();
 
                 Product product = service.getProductByBarcode(request.Barcode);
                 if (product == null)

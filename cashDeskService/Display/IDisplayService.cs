@@ -1,15 +1,10 @@
-﻿using data.EnterpriseData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GRPC_Client;
 
 namespace cashDeskService.Display
 {
     public interface IDisplayService
     {
         void init();
-        void showInDisplay(Product item);
+        void showInDisplay(ProductScannedDTOModel item);
     }
 }

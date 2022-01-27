@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GRPC_Client";
+
+package productScannedDTO;
+
+service ProductScannedDTO {
+  rpc GetProductScannedDTOInfo(ProductScannedDTOLookUpModel) returns (ProductScannedDTOModel);
+}
+
+// Request
+message ProductScannedDTOLookUpModel {
+  int32 Barcode = 1;
+}
+
+// Response
+message ProductScannedDTOModel {
+	int32 Id = 1;
+	int32 Barcode = 2;
+	double PurchasePrice = 3;
+	string Name = 4;
+}

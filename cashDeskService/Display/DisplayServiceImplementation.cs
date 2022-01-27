@@ -2,6 +2,7 @@
 using data.EnterpriseData;
 
 using TestConsole.DisplayController;
+using GRPC_Client;
 
 namespace cashDeskService.Display
 {
@@ -19,7 +20,7 @@ namespace cashDeskService.Display
             displayControllerClient = mockServiceConnector.GetDisplayControllerClient();
         }
 
-        public void showInDisplay(Product item)
+        public void showInDisplay(ProductScannedDTOModel item)
         {
             displayControllerClient.SetDisplayText($"{item.Name}: ${item.PurchasePrice}€  scanned");
         }

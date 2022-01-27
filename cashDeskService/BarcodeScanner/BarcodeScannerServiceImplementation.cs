@@ -1,9 +1,7 @@
-﻿using mockServiceConnector;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using cashDeskGrpcClient;
+using cashDeskService.Display;
+using GRPC_Client;
+using mockServiceConnector;
 using TestConsole.BarcodeScannerService;
 
 namespace cashDeskService.BarcodeScanner
@@ -12,23 +10,29 @@ namespace cashDeskService.BarcodeScanner
     {
 
         private MockServiceConnector mockServiceConnector;
+        private IGrpcClientConnector grpcClientConnector;
+        private IDisplayService displayService;
         private BarcodeScannerServiceClient barcodeScannerClient;
         private Tecan.Sila2.IIntermediateObservableCommand<string> readBarcodes;
 
-        public BarcodeScannerServiceImplementation(MockServiceConnector mockService)
+        public BarcodeScannerServiceImplementation(MockServiceConnector mockService, IGrpcClientConnector grpcClientConnector, IDisplayService displayService)
         {
             this.mockServiceConnector = mockService;
+            this.grpcClientConnector = grpcClientConnector;
+            this.displayService = displayService;
         }
 
         public void init()
         {
             barcodeScannerClient = mockServiceConnector.GetBarcodeScannerServiceClient();
             readBarcodes = barcodeScannerClient.ListenToBarcodes();
+            listenBarcodes(readBarcodes);
         }
 
         public void barcodeScanned(int barcode)
         {
-            throw new NotImplementedException();
+            ProductScannedDTOModel response = grpcClientConnector.getProductScannedDTOClient().GetProductScannedDTOInfo(new ProductScannedDTOLookUpModel { Barcode = barcode });
+            displayService.showInDisplay(response);
         }
 
         async private void listenBarcodes(Tecan.Sila2.IIntermediateObservableCommand<string> readBarcodes)
