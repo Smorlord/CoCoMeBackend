@@ -21,6 +21,8 @@
   <ItemGroup>
     <ProjectReference Include="..\grpcServiceEnterprise\grpcServiceEnterprise.csproj" />
 	<ProjectReference Include="..\grpcServiceStore\grpcServiceStore.csproj" />
+	<ProjectReference Include="..\StoreData\StoreData.csproj" />
+	<ProjectReference Include="..\StoreServices\StoreServices.csproj" />
   </ItemGroup>
 
 	<ItemGroup>

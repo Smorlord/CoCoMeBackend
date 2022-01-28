@@ -46,7 +46,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "grpcServiceStore", "grpcSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreServices", "StoreServices\StoreServices.csproj", "{98667586-6C31-48E1-A7DC-09BC12A5FBDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cashDeskGrpcClient", "cashDeskGrpcClient\cashDeskGrpcClient.csproj", "{C33C69AC-FEA5-4B7C-A4AF-F07DDB099508}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cashDeskGrpcClient", "cashDeskGrpcClient\cashDeskGrpcClient.csproj", "{C33C69AC-FEA5-4B7C-A4AF-F07DDB099508}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreData", "StoreData\StoreData.csproj", "{E92EB75E-CC46-4019-85B8-30E131C665B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,6 +104,10 @@ Global
 		{C33C69AC-FEA5-4B7C-A4AF-F07DDB099508}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C33C69AC-FEA5-4B7C-A4AF-F07DDB099508}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C33C69AC-FEA5-4B7C-A4AF-F07DDB099508}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E92EB75E-CC46-4019-85B8-30E131C665B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E92EB75E-CC46-4019-85B8-30E131C665B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E92EB75E-CC46-4019-85B8-30E131C665B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E92EB75E-CC46-4019-85B8-30E131C665B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +128,7 @@ Global
 		{45740F85-873C-476D-8D66-B475DA8FA0C7} = {65F10399-3F53-4A21-9CA7-3007B446B6C3}
 		{98667586-6C31-48E1-A7DC-09BC12A5FBDF} = {65F10399-3F53-4A21-9CA7-3007B446B6C3}
 		{C33C69AC-FEA5-4B7C-A4AF-F07DDB099508} = {A2996E38-DA20-4BA2-90E0-E54E9202CED0}
+		{E92EB75E-CC46-4019-85B8-30E131C665B7} = {65F10399-3F53-4A21-9CA7-3007B446B6C3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {794386E4-60BD-4CEB-B327-AAD4B4D67E0E}
