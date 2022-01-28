@@ -2,6 +2,7 @@
 using StoreServer;
 using Grpc.Net.Client;
 using GRPC_Client;
+using grpcClientStore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,14 +29,7 @@ if (app.Environment.IsDevelopment())
 // Call Configure(), passing in the dependencies
 startup.Configure(app, app.Lifetime);
 
-// The port number must match the port of the gRPC server.
-using var channel = GrpcChannel.ForAddress("https://localhost:7244"); 
-var client = new ProductDTO.ProductDTOClient(channel);
-var reply = await client.GetProductDTOInfoAsync(
-                    new ProductDTOLookUpModel { Barcode = 1111 });
-Console.WriteLine("Product: " + reply);
-Console.WriteLine("Press any key to exit...");
-Console.ReadKey();
+app.Services.GetRequiredService<IGrpcClientConnector>().connect();
 
 app.Run();
 

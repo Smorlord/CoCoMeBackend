@@ -1,3 +1,4 @@
+using cashDeskGrpcClient;
 using CashDeskPC;
 using cashDeskService.BankServer;
 using cashDeskService.BarcodeScanner;
@@ -42,7 +43,7 @@ var reply = await client.GetProductCDSDTOInfoAsync(
 Console.WriteLine("Product: " + reply);
 Console.WriteLine("Press any key to exit...");
 Console.ReadKey();*/
-
+app.Services.GetRequiredService<IGrpcClientConnector>().connect();
 app.Services.GetRequiredService<ICashboxService>().init();
 app.Services.GetRequiredService<IBankService>().init();
 app.Services.GetRequiredService<IBarcodeScannerService>().init();

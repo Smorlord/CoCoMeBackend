@@ -11,7 +11,7 @@ namespace cashDeskGrpcClient
         private GrpcChannel channel;
         public void connect()
         {
-            this.channel = GrpcChannel.ForAddress("https://localhost:7244");
+            this.channel = GrpcChannel.ForAddress("https://localhost:7134");
             this.productCDSDTOClient = new ProductScannedDTO.ProductScannedDTOClient(channel);
         }
 
