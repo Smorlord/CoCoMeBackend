@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\grpcClientStore\grpcClientStore.csproj" />
     <ProjectReference Include="..\services\services.csproj" />
   </ItemGroup>
 

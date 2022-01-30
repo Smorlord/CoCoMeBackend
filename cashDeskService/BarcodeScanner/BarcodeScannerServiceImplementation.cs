@@ -31,7 +31,8 @@ namespace cashDeskService.BarcodeScanner
 
         public void barcodeScanned(int barcode)
         {
-            ProductScannedDTOModel response = grpcClientConnector.getProductScannedDTOClient().GetProductScannedDTOInfo(new ProductScannedDTOLookUpModel { Barcode = barcode });
+            ProductScannedDTO.ProductScannedDTOClient client = grpcClientConnector.getProductScannedDTOClient();
+            ProductScannedDTOModel response = client.GetProductScannedDTOInfo(new ProductScannedDTOLookUpModel { Barcode = barcode });
             displayService.showInDisplay(response);
         }
 

@@ -22,7 +22,7 @@ namespace cashDeskService.Display
 
         public void showInDisplay(ProductScannedDTOModel item)
         {
-            displayControllerClient.SetDisplayText($"{item.Name}: ${item.PurchasePrice}€  scanned");
+            displayControllerClient.SetDisplayText($"{item.Name}: {item.PurchasePrice}€");
         }
     }
 }

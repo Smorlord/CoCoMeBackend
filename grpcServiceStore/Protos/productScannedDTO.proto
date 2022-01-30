@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "GRPC_Service";
+option csharp_namespace = "GRPC_Serer";
 
 package productScannedDTO;
 

@@ -5,10 +5,13 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-	
-  <ItemGroup>
-    <None Remove="Protos\productDTO.proto" />
-  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Compile Remove="Protos\**" />
+    <Content Remove="Protos\**" />
+    <EmbeddedResource Remove="Protos\**" />
+    <None Remove="Protos\**" />
+  </ItemGroup>-->
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
@@ -26,18 +29,13 @@
 	<ProjectReference Include="..\StoreServices\StoreServices.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
+	<!--<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.19.1" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.42.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.42.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-	</ItemGroup>
-
-
-  <ItemGroup>
-	<Protobuf Include="Protos\productDTO.proto" GrpcServices="Client" />
-  </ItemGroup>
+	</ItemGroup>-->
 
 </Project>
