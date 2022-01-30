@@ -1,4 +1,4 @@
-﻿using data.StoreData.Sale;
+﻿using data.StoreData;
 using mockServiceConnector;
 using System;
 using System.Collections.Generic;
@@ -25,8 +25,8 @@ namespace cashDeskService.Printer
 
         public void print(Sale sale)
         {
-            foreach (var product in sale.products)
-                this.printingServiceClient.PrintLine(product.Name + " " + product.PurchasePrice + "€");
+            foreach (var productSale in sale.products)
+                this.printingServiceClient.PrintLine(productSale.Product.Name + " " + productSale.Product.PurchasePrice + "€");
         }
     }
 }

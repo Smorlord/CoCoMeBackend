@@ -1,4 +1,4 @@
-﻿using data.StoreData.Sale;
+﻿using data.StoreData;
 
 namespace cashDeskService.Printer
 {

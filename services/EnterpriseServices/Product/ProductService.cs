@@ -5,11 +5,11 @@ namespace services.EnterpriseServices
     public interface ProductService
     {
 
-        public void addProduct(Product Product);
-        public void removeProduct(int ProductId);
-        public Product getProduct(int ProductId);
-        public Product getProductByBarcode(int Barcode);
-        public List<Product> getProducts();
+        void addProduct(Product Product);
+        void removeProduct(int ProductId);
+        Product getProduct(int ProductId);
+        Product getProductByBarcode(int Barcode);
+        List<Product> getProducts();
 
     }
 }
