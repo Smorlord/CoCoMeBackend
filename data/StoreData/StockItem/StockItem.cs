@@ -12,7 +12,7 @@ namespace data.StoreData
 
         public int MaxStock { get; set; }
 
-        public List<Product> Products = new List<Product>();
+        public Product Product { get; set; }
 
 
     }
