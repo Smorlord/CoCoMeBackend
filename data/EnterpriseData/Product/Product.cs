@@ -7,7 +7,7 @@
         public double PurchasePrice { get; set; }
         public string Name { get; set; }
 
-        public ProductSupplier ProductSupplier { get; set; }
+        // public ProductSupplier ProductSupplier { get; set; }
 
     }
 }

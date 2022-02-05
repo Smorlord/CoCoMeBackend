@@ -1,4 +1,5 @@
 ﻿using static GRPC_Client.ProductScannedDTO;
+using static GRPC_SaleStoreClient.SaleStoreDTO;
 
 namespace cashDeskGrpcClient
 {
@@ -7,5 +8,7 @@ namespace cashDeskGrpcClient
 
         void connect();
         ProductScannedDTOClient getProductScannedDTOClient();
+
+        SaleStoreDTOClient getSaleStoreDTOClient();
     }
 }

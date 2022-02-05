@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StoreData.Data.ProductSale;
 using StoreServices.StoreService;
 
 namespace StoreServer.Controllers
@@ -19,9 +18,8 @@ namespace StoreServer.Controllers
 
         [HttpGet]
         [Route("/product")]
-        public void CreateProductSale(ProductSale productSale)
+        public void CreateProductSale()
         {
-            productSaleService.createProductSale(productSale);
         }
 
     }

@@ -1,5 +1,4 @@
-﻿using data.StoreData;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StoreServices.StoreService;
 
 namespace StoreServer.Controllers
@@ -20,16 +19,14 @@ namespace StoreServer.Controllers
 
         [HttpPost]
         [Route("/order")]
-        public int CreateOrder(List<OrderEntry> orderEntries)
+        public void CreateOrder()
         {
-           return orderService.createOrder(orderEntries);
         }
 
         [HttpGet]
         [Route("/order/{id}")]
-        public ProductOrder GetOrderById(int id)
+        public void GetOrderById(int id)
         {
-            return orderService.getOrderById(id);
         }
 
         [HttpPost]

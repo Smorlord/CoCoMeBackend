@@ -1,10 +1,4 @@
-﻿using data.StoreData;
-using mockServiceConnector;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using mockServiceConnector;
 using TestConsole.PrintingService;
 
 namespace cashDeskService.Printer
@@ -23,10 +17,10 @@ namespace cashDeskService.Printer
             this.printingServiceClient = this.mockServiceConnector.GetPrintingServiceClient();
         }
 
-        public void print(Sale sale)
+        public void print()
         {
-            foreach (var productSale in sale.products)
-                this.printingServiceClient.PrintLine(productSale.Product.Name + " " + productSale.Product.PurchasePrice + "€");
+            /*foreach (var productSale in sale.products)
+                this.printingServiceClient.PrintLine(productSale.Product.Name + " " + productSale.Product.PurchasePrice + "€");*/
         }
     }
 }

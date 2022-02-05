@@ -1,4 +1,7 @@
-﻿using mockServiceConnector;
+﻿using cashDeskGrpcClient;
+using cashDeskService.Session;
+using GRPC_SaleStoreClient;
+using mockServiceConnector;
 using Tecan.Sila2;
 using TestConsole;
 using TestConsole.CashboxService;
@@ -9,10 +12,15 @@ namespace cashDeskService.Cashbox
     {
         private MockServiceConnector mockServiceConnector;
         private CashboxServiceClient cashboxClient;
+        private IGrpcClientConnector grpcClientConnector;
+        private ISessionService sessionService;
         private Tecan.Sila2.IIntermediateObservableCommand<CashboxButton> cashboxButtons;
-        public CashboxServiceImplementation(MockServiceConnector mockService)
+
+        public CashboxServiceImplementation(MockServiceConnector mockService, IGrpcClientConnector grpcClientConnector, ISessionService sessionService)
         {
             this.mockServiceConnector = mockService;
+            this.grpcClientConnector = grpcClientConnector;
+            this.sessionService = sessionService;
 
         }
         public void init()
@@ -44,9 +52,11 @@ namespace cashDeskService.Cashbox
 
         public void StartNewSale()
         {
-            /*Console.WriteLine("My StartNewSale");
-            var reply = await client.GetProductDTOInfoAsync(
-                    new ProductDTOLookUpModel { Barcode = 1111 });*/
+            CreateSaleStoreDTOLookUpModel model = new CreateSaleStoreDTOLookUpModel { StoreId = 1 };
+            SaleStoreDTO.SaleStoreDTOClient client = this.grpcClientConnector.getSaleStoreDTOClient();
+            CreateSaleStoreDTOModel response = client.CreateSaleStore(model);
+            this.sessionService.updateSaleId(response.SaleId);
+            Console.WriteLine(response.SaleId.ToString());
         }
 
         async private void ButtonListener(IIntermediateObservableCommand<CashboxButton> cashboxButtons)

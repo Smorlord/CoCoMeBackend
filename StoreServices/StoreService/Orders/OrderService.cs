@@ -1,11 +1,9 @@
-﻿using data.StoreData;
-
-namespace StoreServices.StoreService
+﻿namespace StoreServices.StoreService
 {
     public interface OrderService
     { 
-        public int createOrder(List<OrderEntry> orderEntries);
-        public ProductOrder getOrderById(int oderId);
+        public int createOrder();
+        public void getOrderById(int oderId);
 
         public void updateIventoryByOder(int orderId);
     }

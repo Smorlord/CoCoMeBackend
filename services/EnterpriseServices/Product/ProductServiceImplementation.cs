@@ -1,4 +1,5 @@
 ﻿
+using data;
 using data.EnterpriseData;
 
 namespace services.EnterpriseServices
@@ -34,7 +35,7 @@ namespace services.EnterpriseServices
 
         public void addProduct(Product Product)
         {
-            using (var db = new EnterpriseDBContext())
+            using (var db = new TradingsystemDbContext())
             {
                 db.Add(Product);
                 db.SaveChanges();
@@ -43,7 +44,7 @@ namespace services.EnterpriseServices
 
         public void removeProduct(int ProductID)
         {
-            using (var db = new EnterpriseDBContext())
+            using (var db = new TradingsystemDbContext())
             {
                 db.Remove(getProduct(ProductID));
                 db.SaveChanges();
@@ -53,7 +54,7 @@ namespace services.EnterpriseServices
 
         public Product getProduct(int ProductId)
         {
-            using (var db = new EnterpriseDBContext())
+            using (var db = new TradingsystemDbContext())
             {
                 return db.Products.First(p => p.Id == ProductId);
             }
@@ -62,16 +63,22 @@ namespace services.EnterpriseServices
 
         public List<Product> getProducts()
         {
-            using (var db = new EnterpriseDBContext())
+            using (var db = new TradingsystemDbContext())
             {
-                return db.Products.ToList();
+                if (db.Products != null)
+                {
+                    return db.Products.ToList();
+                } else
+                {
+                    return new List<Product>();
+                }
             }
             
         }
 
         public Product getProductByBarcode(int Barcode)
         {
-            using (var db = new EnterpriseDBContext())
+            using (var db = new TradingsystemDbContext())
             {
                 return db.Products.First(p => p.Barcode == Barcode);
             }

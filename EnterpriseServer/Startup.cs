@@ -1,4 +1,5 @@
 ﻿using services.EnterpriseServices;
+using services.StoreServices;
 
 namespace EnterpriseServer
 {
@@ -16,6 +17,8 @@ namespace EnterpriseServer
         {
             services.AddControllers();
             services.AddSingleton<ProductService, ProductServiceImplementation>();
+            services.AddSingleton<ISaleService, SaleServiceImplementation>();
+            services.AddSingleton<IStoreService, StoreServiceImplementation>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

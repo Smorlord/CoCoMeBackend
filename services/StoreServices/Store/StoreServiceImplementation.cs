@@ -1,9 +1,5 @@
-﻿using data.StoreData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using data;
+using data.StoreData;
 
 namespace services.StoreServices
 {
@@ -12,20 +8,26 @@ namespace services.StoreServices
 
         public StoreServiceImplementation()
         {
+            
+        }
+
+        public void init()
+        {
             if (getStores().Count == 0)
             {
                 Store store1 = new Store();
                 store1.Name = "Edeka Nolte";
                 store1.Location = "Wiesbaden";
+                store1.Id = 1;
 
                 addStore(store1);
-               
+
             }
         }
 
         public void addStore(Store Store)
         {
-            using (var db = new StoreDBContext())
+            using (var db = new TradingsystemDbContext())
             {
                 db.Add(Store);
                 db.SaveChanges();
@@ -34,7 +36,7 @@ namespace services.StoreServices
 
         public Store getStore(int StoreId)
         {
-            using (var db = new StoreDBContext())
+            using (var db = new TradingsystemDbContext())
             {
                 return db.Stores.First(p => p.Id == StoreId);
             }
@@ -43,9 +45,17 @@ namespace services.StoreServices
 
         public List<Store> getStores()
         {
-            using (var db = new StoreDBContext())
+            using (var db = new TradingsystemDbContext())
             {
-                return db.Stores.ToList();
+                if (db.Stores != null)
+                {
+                    return db.Stores.ToList();
+                }
+                else
+                {
+                    return new List<Store>();
+                }
+                
             }
 
         }

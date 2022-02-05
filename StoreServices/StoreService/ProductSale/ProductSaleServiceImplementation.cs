@@ -1,9 +1,8 @@
-﻿using StoreData.Data.ProductSale;
-namespace StoreServices.StoreService
+﻿namespace StoreServices.StoreService
 {
     public class ProductSaleServiceImplementation : ProductSaleService
     {
-        public void createProductSale(ProductSale productSale)
+        public void createProductSale()
         {
             throw new NotImplementedException();
         }

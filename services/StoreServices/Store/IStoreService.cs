@@ -9,7 +9,7 @@ namespace services.StoreServices
 {
     public interface IStoreService
     {
-
+        void init();
         void addStore(Store Store);
         Store getStore(int StoreId);
         List<Store> getStores();

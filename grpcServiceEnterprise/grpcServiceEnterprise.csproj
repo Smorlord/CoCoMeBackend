@@ -10,14 +10,18 @@
     <None Remove="Protos\productDTO.proto" />
   </ItemGroup>
 
-<!--<ItemGroup>
-    <Compile Include="Protos\product.proto" />
-  </ItemGroup>-->
+  <ItemGroup>
+	<None Remove="Protos\saleEnterpriseDTO.proto" />
+  </ItemGroup>
 
   <ItemGroup>
 	<Protobuf Include="Protos\productDTO.proto" GrpcServices="Server" />
   </ItemGroup>
 
+  <ItemGroup>
+	<Protobuf Include="Protos\saleEnterpriseDTO.proto" GrpcServices="Server" />
+  </ItemGroup>
+	
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.42.0" />
   </ItemGroup>

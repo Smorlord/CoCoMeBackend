@@ -1,6 +1,4 @@
-﻿using data.StoreData;
-
-namespace StoreServices.StoreService
+﻿namespace StoreServices.StoreService
 {
     public class StockServiceImplementation : StockService
     {
@@ -8,7 +6,7 @@ namespace StoreServices.StoreService
         {
         }
 
-        public List<StockItem> getStockItemsByStoreId(int storeId)
+        public void getStockItemsByStoreId(int storeId)
         {
             throw new NotImplementedException();
         }

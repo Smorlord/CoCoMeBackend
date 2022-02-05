@@ -1,8 +1,7 @@
-﻿using StoreData.Data.ProductSale;
-namespace StoreServices.StoreService
+﻿namespace StoreServices.StoreService
 {
     public interface ProductSaleService
     {
-        public void createProductSale(ProductSale productSale);
+        public void createProductSale();
     }
 }

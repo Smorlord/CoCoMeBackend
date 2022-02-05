@@ -1,0 +1,55 @@
+﻿syntax = "proto3";
+option csharp_namespace = "GRPC_SaleEnterpriseServer";
+
+package saleEnterpriseDTO;
+
+service SaleEnterpriseDTO {
+  rpc CreateSaleEnterprise(CreateSaleEnterpriseDTOLookUpModel) returns (CreateSaleEnterpriseDTOModel);
+  //rpc UpdateSaleEnterprise(UpdateSaleEnterpriseDTOLookUpModel) returns (UpdateSaleEnterpriseDTOModel);
+}
+
+// Request
+message CreateSaleEnterpriseDTOLookUpModel {
+  int32 StoreId = 1;
+}
+
+// Response
+message CreateSaleEnterpriseDTOModel {
+	int32 SaleId = 1;
+}
+
+// Request
+/*message UpdateSaleEnterpriseDTOLookUpModel {
+  int32 SaleId = 1;
+  repeated ProductSaleEnterpriseDTOModel productSuppliertDTOModel = 5;
+}
+
+// Response
+message UpdateSaleEnterpriseDTOModel {
+	int32 SaleId = 1;
+	repeated ProductSaleEnterpriseDTOModel productSaleEnterpriseDTOModel = 3;
+}
+
+
+message ProductSaleEnterpriseDTOModel {
+	int32 Id = 1;
+	int32 ProductEnterpriseDTOModel = 2;
+	double salePrice = 3;
+}
+
+// Response
+message ProductEnterpriseDTOModel {
+	int32 Id = 1;
+	int32 Barcode = 2;
+	double PurchasePrice = 3;
+	string Name = 4;
+	repeated ProductSupplierEnterpriseDTOModel productSupplierEnterpriseDTOModel = 5;
+}
+
+
+message ProductSupplierEnterpriseDTOModel {
+	int32 Id = 1;
+	int32 Barcode = 2;
+	double PurchasePrice = 3;
+	string Name = 4;
+}*/

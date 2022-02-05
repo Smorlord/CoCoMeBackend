@@ -6,7 +6,7 @@ using cashDeskService.CardReader;
 using cashDeskService.Cashbox;
 using cashDeskService.Display;
 using cashDeskService.Printer;
-
+using cashDeskService.Session;
 using Grpc.Net.Client;
 using GRPC_Client;
 
@@ -42,6 +42,7 @@ app.Services.GetRequiredService<IBarcodeScannerService>().init();
 app.Services.GetRequiredService<ICardReaderService>().init();
 app.Services.GetRequiredService<IDisplayService>().init();
 app.Services.GetRequiredService<IPrinterService>().init();
+app.Services.GetRequiredService<ISessionService>().init();
 
 /*using var channel123 = GrpcChannel.ForAddress("https://localhost:7134");
 var client123 = new ProductScannedDTO.ProductScannedDTOClient(channel123);

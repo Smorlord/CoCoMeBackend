@@ -1,5 +1,4 @@
-﻿using data.StoreData;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StoreServices.StoreService;
 
 namespace StoreServer.Controllers
@@ -20,9 +19,8 @@ namespace StoreServer.Controllers
 
         [HttpGet]
         [Route("/stock/{id}")]
-        public List<StockItem> GetStockItemsByStoreId(int id)
+        public void GetStockItemsByStoreId(int id)
         {
-            return stockService.getStockItemsByStoreId(id);
         }
     }
 }

@@ -3,9 +3,11 @@ namespace data.StoreData
 {
     public class Sale
     {
-        public int id { get; set; }
-        public DateTime saleDateTime { get; set; }
-        public Store store { get; set; }
-        public List<ProductSale> products { get; } = new List<ProductSale>();
+        public int Id { get; set; }
+        public DateTime SaleDateTime { get; set; }
+
+        public int StoreId { get; set; }
+        public Store Store { get; set; }
+        //public List<ProductSale> ProductSales { get; } = new List<ProductSale>();
     }
 }

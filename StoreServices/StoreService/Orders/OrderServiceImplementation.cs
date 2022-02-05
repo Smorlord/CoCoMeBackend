@@ -1,6 +1,4 @@
-﻿using data.StoreData;
-
-namespace StoreServices.StoreService
+﻿namespace StoreServices.StoreService
 {
     public class OrderServiceImplementation : OrderService
     {
@@ -8,12 +6,12 @@ namespace StoreServices.StoreService
         {
         }
 
-        public int createOrder(List<OrderEntry> orderEntries)
+        public int createOrder()
         {
             throw new NotImplementedException();
         }
 
-        public ProductOrder getOrderById(int oderId)
+        public void getOrderById(int oderId)
         {
             throw new NotImplementedException();
         }

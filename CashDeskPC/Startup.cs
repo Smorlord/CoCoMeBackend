@@ -6,6 +6,7 @@ using cashDeskService.CardReader;
 using cashDeskService.Cashbox;
 using cashDeskService.Display;
 using cashDeskService.Printer;
+using cashDeskService.Session;
 using mockServiceConnector;
 
 namespace CashDeskPC
@@ -31,6 +32,7 @@ namespace CashDeskPC
             services.AddSingleton<IPrinterService, PrinterServiceImplementation>();
             services.AddSingleton<IBarcodeScannerService, BarcodeScannerServiceImplementation>();
             services.AddSingleton<IBankService, BankServiceImplementation>();
+            services.AddSingleton<ISessionService, SessionServiceImplementation>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

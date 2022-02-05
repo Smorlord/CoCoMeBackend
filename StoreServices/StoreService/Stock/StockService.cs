@@ -1,9 +1,7 @@
-﻿using data.StoreData;
-
-namespace StoreServices.StoreService
+﻿namespace StoreServices.StoreService
 {
     public interface StockService
     {
-        public List<StockItem> getStockItemsByStoreId(int storeId);
+        public void getStockItemsByStoreId(int storeId);
     }
 }

@@ -1,5 +1,6 @@
 using EnterpriseServer;
 using GRPC_Service.Services;
+using services.StoreServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,9 +25,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapGrpcService<ProductGrpcService>();
+app.MapGrpcService<SaleEnterpriseGrpcService>();
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
 // Call Configure(), passing in the dependencies
 startup.Configure(app, app.Lifetime);
+
+app.Services.GetRequiredService<ISaleService>().init();
+app.Services.GetRequiredService<IStoreService>().init();
 
 app.Run();
