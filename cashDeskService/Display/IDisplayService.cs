@@ -11,5 +11,7 @@ namespace cashDeskService.Display
 
         void showStartPurchase(int saleId);
         void showFinishPurchase();
+
+        void showNoPurchase();
     }
 }

@@ -5,8 +5,8 @@ namespace cashDeskService.Session
     public class SessionServiceImplementation : ISessionService
     {
         private int storeId;
-        private int saleId;
-        private double totalPrice;
+        private int saleId = -1;
+        private double totalPrice = 0;
         private List<ProductScannedDTOModel> scannedProducts = new List<ProductScannedDTOModel>();
 
         public void init()

@@ -67,6 +67,7 @@ namespace cashDeskService.Cashbox
             try
             {
                 cardReaderService.pay(Convert.ToInt64(sessionService.getTotalPrice() * 100));
+                clearPurchase();
             }
             catch (Exception ex)
             {
@@ -76,9 +77,7 @@ namespace cashDeskService.Cashbox
 
         public void PayWithCash()
         {
-            displayService.showFinishPurchase();
-            this.sessionService.updatePurchaseId(-1);
-            this.sessionService.clearScannedProduct();
+            clearPurchase();
         }
 
         public void StartNewPurchase()
@@ -121,6 +120,13 @@ namespace cashDeskService.Cashbox
                     }
                 }
             }
+        }
+
+        private void clearPurchase()
+        {
+            displayService.showFinishPurchase();
+            this.sessionService.updatePurchaseId(-1);
+            this.sessionService.clearScannedProduct();
         }
     }
 }

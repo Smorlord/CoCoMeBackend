@@ -33,6 +33,11 @@ namespace cashDeskService.Display
             }
         }
 
+        public void showNoPurchase()
+        {
+            displayControllerClient.SetDisplayText($"Kein Einkauf gefunden, bitte drücken Sie erst den Button 'Start New Sale' ");
+        }
+
         public void showStartPurchase(int saleId)
         {
             displayControllerClient.SetDisplayText($"Einkauf {saleId} gestartet, bitte Items scannen");

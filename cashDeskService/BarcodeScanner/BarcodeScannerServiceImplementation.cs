@@ -34,11 +34,17 @@ namespace cashDeskService.BarcodeScanner
 
         public void barcodeScanned(int barcode)
         {
-            ProductScannedDTO.ProductScannedDTOClient client = grpcClientConnector.getProductScannedDTOClient();
-            ProductScannedDTOModel response = client.GetProductScannedDTOInfo(new ProductScannedDTOLookUpModel { Barcode = barcode, StoreId = sessionService.getStoreId() });
-            displayService.showItemInDisplay(response);
+            if (sessionService.getPurchaseId() != -1)
+            {
+                ProductScannedDTO.ProductScannedDTOClient client = grpcClientConnector.getProductScannedDTOClient();
+                ProductScannedDTOModel response = client.GetProductScannedDTOInfo(new ProductScannedDTOLookUpModel { Barcode = barcode, StoreId = sessionService.getStoreId() });
+                displayService.showItemInDisplay(response);
 
-            sessionService.addScannedProduct(response);
+                sessionService.addScannedProduct(response);
+            } else
+            {
+                displayService.showNoPurchase();
+            }
         }
 
         async private void listenBarcodes(Tecan.Sila2.IIntermediateObservableCommand<string> readBarcodes)
