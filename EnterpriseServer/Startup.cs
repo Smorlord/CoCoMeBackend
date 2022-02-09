@@ -16,8 +16,8 @@ namespace EnterpriseServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<ProductService, ProductServiceImplementation>();
-            services.AddSingleton<ISaleService, SaleServiceImplementation>();
+            services.AddSingleton<IProductService, ProductServiceImplementation>();
+            services.AddSingleton<IPurchaseService, PurchaseServiceImplementation>();
             services.AddSingleton<IStoreService, StoreServiceImplementation>();
         }
 

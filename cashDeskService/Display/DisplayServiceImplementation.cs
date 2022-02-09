@@ -18,7 +18,7 @@ namespace cashDeskService.Display
             displayControllerClient = mockServiceConnector.GetDisplayControllerClient();
         }
 
-        public void showFinishSale()
+        public void showFinishPurchase()
         {
             displayControllerClient.SetDisplayText("Der Betrag wurde beglichen, vielen Dank für Ihren Einkauf");
         }
@@ -33,7 +33,7 @@ namespace cashDeskService.Display
             }
         }
 
-        public void showStartSale(int saleId)
+        public void showStartPurchase(int saleId)
         {
             displayControllerClient.SetDisplayText($"Einkauf {saleId} gestartet, bitte Items scannen");
         }

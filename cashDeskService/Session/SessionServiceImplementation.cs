@@ -14,7 +14,7 @@ namespace cashDeskService.Session
             this.storeId = 1;
         }
 
-        public int getSaleId()
+        public int getPurchaseId()
         {
             return this.saleId;
         }
@@ -24,7 +24,7 @@ namespace cashDeskService.Session
            return this.storeId;
         }
 
-        public void updateSaleId(int saleId)
+        public void updatePurchaseId(int saleId)
         {
             this.saleId = saleId;
         }

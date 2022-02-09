@@ -2,21 +2,21 @@
 using services.StoreServices;
 using Grpc.Core;
 using data.StoreData;
-using GRPC_SaleEnterpriseServer;
+using GRPC_PurchaseEnterpriseServer;
 using data.EnterpriseData;
 using services.EnterpriseServices;
 using data;
 
 namespace GRPC_Service.Services
 {
-    public class SaleEnterpriseGrpcService : SaleEnterpriseDTO.SaleEnterpriseDTOBase
+    public class PurchaseEnterpriseGrpcService : PurchaseEnterpriseDTO.PurchaseEnterpriseDTOBase
     {
-        private readonly ILogger<SaleEnterpriseGrpcService> _logger;
-        private ISaleService saleService;
-        private ProductService productService;
+        private readonly ILogger<PurchaseEnterpriseGrpcService> _logger;
+        private IPurchaseService saleService;
+        private IProductService productService;
         private IStoreService storeService;
 
-        public SaleEnterpriseGrpcService(ILogger<SaleEnterpriseGrpcService> logger, ISaleService saleService, ProductService productService, IStoreService storeService)
+        public PurchaseEnterpriseGrpcService(ILogger<PurchaseEnterpriseGrpcService> logger, IPurchaseService saleService, IProductService productService, IStoreService storeService)
         {
             this.saleService = saleService;
             this._logger = logger;
@@ -24,20 +24,20 @@ namespace GRPC_Service.Services
             this.storeService = storeService;
         }
 
-        public override Task<CreateSaleEnterpriseDTOModel> CreateSaleEnterprise(CreateSaleEnterpriseDTOLookUpModel request, ServerCallContext context)
+        public override Task<CreatePurchaseEnterpriseDTOModel> CreatePurchaseEnterprise(CreatePurchaseEnterpriseDTOLookUpModel request, ServerCallContext context)
         {
             try
             {
-                CreateSaleEnterpriseDTOModel output = new CreateSaleEnterpriseDTOModel();
+                CreatePurchaseEnterpriseDTOModel output = new CreatePurchaseEnterpriseDTOModel();
 
-                Purchase sale = saleService.createSale(null, request.StoreId);
-                if (sale == null)
+                Purchase Purchase = saleService.createPurchase(null, request.StoreId);
+                if (Purchase == null)
                 {
                     // TODO throw RPC Exception NoValueFound
                     return null;
                 }
 
-                output.SaleId = sale.Id;
+                output.PurchaseId = Purchase.Id;
 
                 return Task.FromResult(output);
             }
@@ -48,18 +48,18 @@ namespace GRPC_Service.Services
             }
         }
 
-        public override Task<UpdateSaleEnterpriseDTOModel> UpdateSaleEnterprise(UpdateSaleEnterpriseDTOLookUpModel request, ServerCallContext context)
+        public override Task<UpdatePurchaseEnterpriseDTOModel> UpdatePurchaseEnterprise(UpdatePurchaseEnterpriseDTOLookUpModel request, ServerCallContext context)
         {
             try
             {
-                UpdateSaleEnterpriseDTOModel output = new UpdateSaleEnterpriseDTOModel();
+                UpdatePurchaseEnterpriseDTOModel output = new UpdatePurchaseEnterpriseDTOModel();
                 List<PurchaseItem> purchaseItems = new List<PurchaseItem>();
-                Purchase saleResponse;
+                Purchase PurchaseResponse;
                 using (var db = new TradingsystemDbContext())
                 {
                     foreach (var productDTO in request.ProductEnterpriseDTOLookUpModel)
                     {
-                        Purchase purchase = saleService.getSaleById(db, request.SaleId);
+                        Purchase purchase = saleService.getPurchaseById(db, request.PurchaseId);
                         PurchaseItem purchaseItem = new PurchaseItem();
                         ProductSale productSale = storeService.getProductSaleByProductId(db, purchase.StoreId, productDTO.Id);
                         Product product = productService.getProduct(db, productDTO.Id);
@@ -71,10 +71,10 @@ namespace GRPC_Service.Services
                         purchaseItems.Add(purchaseItem);
 
                     }
-                    saleResponse = saleService.updateSale(db, request.SaleId, purchaseItems);
+                    PurchaseResponse = saleService.updatePurchase(db, request.PurchaseId, purchaseItems);
 
                     List<ProductEnterpriseDTOModel> productSalesEnterprise = new List<ProductEnterpriseDTOModel>();
-                    foreach (var purchaseItem in saleResponse.PurchaseItems)
+                    foreach (var purchaseItem in PurchaseResponse.PurchaseItems)
                     {
                         ProductEnterpriseDTOModel product = new ProductEnterpriseDTOModel();
                         product.Name = purchaseItem.Product.Name;
@@ -82,7 +82,7 @@ namespace GRPC_Service.Services
                         product.PurchasePrice = purchaseItem.Product.SellingPrice;
                         product.Barcode = purchaseItem.Product.Barcode;
 
-                        ProductSale productSale = storeService.getProductSaleByProductId(db, saleResponse.Store.Id, product.Id);
+                        ProductSale productSale = storeService.getProductSaleByProductId(db, PurchaseResponse.Store.Id, product.Id);
                         if (productSale != null)
                         {
                             product.SalePrice = productSale.SalePrice;
@@ -96,7 +96,7 @@ namespace GRPC_Service.Services
                     output.ProductEnterpriseDTOModel.AddRange(productSalesEnterprise);
                 }
                 
-                output.SaleId = saleResponse.Id;
+                output.PurchaseId = PurchaseResponse.Id;
 
                 return Task.FromResult(output);
             }

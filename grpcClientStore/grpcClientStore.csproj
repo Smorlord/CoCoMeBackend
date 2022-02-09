@@ -14,7 +14,7 @@
 
 	<ItemGroup>
 		<None Remove="Protos\productDTO.proto" />
-		<None Remove="Protos\saleEnterpriseDTO.proto" />
+		<None Remove="Protos\purchaseEnterpriseDTO.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -29,7 +29,7 @@
 
 	<ItemGroup>
 		<Protobuf Include="Protos\productDTO.proto" GrpcServices="Client" />
-		<Protobuf Include="Protos\saleEnterpriseDTO.proto" GrpcServices="CLient" />
+		<Protobuf Include="Protos\purchaseEnterpriseDTO.proto" GrpcServices="CLient" />
 	</ItemGroup>
 
 </Project>

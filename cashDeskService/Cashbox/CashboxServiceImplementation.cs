@@ -3,7 +3,7 @@ using cashDeskService.Display;
 using cashDeskService.Printer;
 using cashDeskService.Session;
 using cashDeskService.CardReader;
-using GRPC_SaleStoreClient;
+using GRPC_PurchaseStoreClient;
 using mockServiceConnector;
 using Tecan.Sila2;
 using TestConsole;
@@ -43,7 +43,7 @@ namespace cashDeskService.Cashbox
             Console.WriteLine("DisableExpress");
         }
 
-        public void FinishSale()
+        public void FinishPurchase()
         {
 
             List<ProductStoreDTOLookUpModel> products = new List<ProductStoreDTOLookUpModel>();
@@ -53,10 +53,10 @@ namespace cashDeskService.Cashbox
                 product.Id = scannedProduct.Id;
                 products.Add(product);
             }
-            UpdateSaleStoreDTOLookUpModel data = new UpdateSaleStoreDTOLookUpModel();
-            data.SaleId = sessionService.getSaleId();
+            UpdatePurchaseStoreDTOLookUpModel data = new UpdatePurchaseStoreDTOLookUpModel();
+            data.PurchaseId = sessionService.getPurchaseId();
             data.ProductStoreDTOLookUpModel.AddRange(products);
-            UpdateSaleStoreDTOModel responseUpdate = this.grpcClientConnector.getSaleStoreDTOClient().UpdateSaleStore(data);
+            UpdatePurchaseStoreDTOModel responseUpdate = this.grpcClientConnector.getPurchaseStoreDTOClient().UpdatePurchaseStore(data);
             displayService.showTotalInDisplay(responseUpdate.SalePriceTotal);
             printerService.printItems(responseUpdate.ProductStoreDTOModel.ToList());
             sessionService.setTotalPrice(responseUpdate.SalePriceTotal);
@@ -76,18 +76,18 @@ namespace cashDeskService.Cashbox
 
         public void PayWithCash()
         {
-            displayService.showFinishSale();
-            this.sessionService.updateSaleId(-1);
+            displayService.showFinishPurchase();
+            this.sessionService.updatePurchaseId(-1);
             this.sessionService.clearScannedProduct();
         }
 
-        public void StartNewSale()
+        public void StartNewPurchase()
         {
-            CreateSaleStoreDTOLookUpModel model = new CreateSaleStoreDTOLookUpModel { StoreId = 1 };
-            SaleStoreDTO.SaleStoreDTOClient client = this.grpcClientConnector.getSaleStoreDTOClient();
-            CreateSaleStoreDTOModel response = client.CreateSaleStore(model);
-            this.sessionService.updateSaleId(response.SaleId);
-            displayService.showStartSale(sessionService.getSaleId());
+            CreatePurchaseStoreDTOLookUpModel model = new CreatePurchaseStoreDTOLookUpModel { StoreId = 1 };
+            PurchaseStoreDTO.PurchaseStoreDTOClient client = this.grpcClientConnector.getPurchaseStoreDTOClient();
+            CreatePurchaseStoreDTOModel response = client.CreatePurchaseStore(model);
+            this.sessionService.updatePurchaseId(response.PurchaseId);
+            displayService.showStartPurchase(sessionService.getPurchaseId());
         }
 
         async private void ButtonListener(IIntermediateObservableCommand<CashboxButton> cashboxButtons)
@@ -99,7 +99,7 @@ namespace cashDeskService.Cashbox
                     switch (button)
                     {
                         case CashboxButton.FinishSale:
-                            FinishSale();
+                            FinishPurchase();
                             break;
 
                         case CashboxButton.PayWithCard:
@@ -111,7 +111,7 @@ namespace cashDeskService.Cashbox
                             break;
 
                         case CashboxButton.StartNewSale:
-                            StartNewSale();
+                            StartNewPurchase();
                             break;
 
                         case CashboxButton.DisableExpressMode:

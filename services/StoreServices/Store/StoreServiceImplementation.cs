@@ -8,9 +8,9 @@ namespace services.StoreServices
     public class StoreServiceImplementation : IStoreService
     {
 
-        private ProductService productService;
+        private IProductService productService;
 
-        public StoreServiceImplementation(ProductService productService)
+        public StoreServiceImplementation(IProductService productService)
         {
             this.productService = productService;
         }

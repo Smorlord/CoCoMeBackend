@@ -11,9 +11,9 @@ namespace EnterpriseServer.Controllers
     {
         private readonly ILogger<ProductController> _logger;
 
-        private ProductService productService;
+        private IProductService productService;
 
-        public ProductController(ILogger<ProductController> logger, ProductService productService)
+        public ProductController(ILogger<ProductController> logger, IProductService productService)
         {
             _logger = logger;
             this.productService = productService;

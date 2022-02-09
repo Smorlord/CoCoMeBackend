@@ -8,10 +8,7 @@
 
   <ItemGroup>
     <None Remove="Protos\productDTO.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
-	<None Remove="Protos\saleEnterpriseDTO.proto" />
+    <None Remove="Protos\purchaseEnterpriseDTO.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<Protobuf Include="Protos\saleEnterpriseDTO.proto" GrpcServices="Server" />
+	<Protobuf Include="Protos\purchaseEnterpriseDTO.proto" GrpcServices="Server" />
   </ItemGroup>
 	
   <ItemGroup>

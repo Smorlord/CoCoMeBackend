@@ -2,7 +2,6 @@
 using cashDeskService.Display;
 using cashDeskService.Session;
 using GRPC_Client;
-using GRPC_SaleStoreClient;
 using mockServiceConnector;
 using TestConsole.BarcodeScannerService;
 

@@ -3,7 +3,7 @@ using data.EnterpriseData;
 
 namespace services.EnterpriseServices
 {
-    public interface ProductService
+    public interface IProductService
     {
 
         void addProduct(TradingsystemDbContext context, Product Product);

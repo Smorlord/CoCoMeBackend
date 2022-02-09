@@ -1,5 +1,5 @@
 ﻿using static GRPC_Client.ProductDTO;
-using static GRPC_SaleEnterpriseClient.SaleEnterpriseDTO;
+using static GRPC_PurchaseEnterpriseClient.PurchaseEnterpriseDTO;
 
 namespace grpcClientStore
 {
@@ -7,6 +7,6 @@ namespace grpcClientStore
     {
         void connect();
         ProductDTOClient GetProductDTOClient();
-        SaleEnterpriseDTOClient GetSaleEnterpriseDTOClient();
+        PurchaseEnterpriseDTOClient GetPurchaseEnterpriseDTOClient();
     }
 }

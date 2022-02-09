@@ -1,4 +1,4 @@
-﻿using GRPC_SaleStoreClient;
+﻿using GRPC_PurchaseStoreClient;
 using mockServiceConnector;
 using TestConsole.PrintingService;
 

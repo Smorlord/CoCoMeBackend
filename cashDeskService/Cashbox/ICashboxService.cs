@@ -3,8 +3,8 @@
     public interface ICashboxService
     {
         void init();
-        void StartNewSale();
-        void FinishSale();
+        void StartNewPurchase();
+        void FinishPurchase();
         void PayWithCash();
         void PayWithCard();
         void DisableExpress();

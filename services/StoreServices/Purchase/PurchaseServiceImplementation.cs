@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace services.StoreServices
 {
-    public class SaleServiceImplementation : ISaleService
+    public class PurchaseServiceImplementation : IPurchaseService
     {
         private IStoreService storeService;
-        public SaleServiceImplementation(IStoreService storeService)
+        public PurchaseServiceImplementation(IStoreService storeService)
         {
             this.storeService = storeService;
         }
@@ -20,7 +20,7 @@ namespace services.StoreServices
         {
         }
 
-        public Purchase createSale(TradingsystemDbContext context, int storeId)
+        public Purchase createPurchase(TradingsystemDbContext context, int storeId)
         {
             using (var db = TradingsystemDbContext.GetContext(context))
             {
@@ -33,19 +33,19 @@ namespace services.StoreServices
             }
         }
 
-        public Purchase getSaleById(TradingsystemDbContext context, int saleId)
+        public Purchase getPurchaseById(TradingsystemDbContext context, int purchaseId)
         {
             using (var db = TradingsystemDbContext.GetContext(context))
             {
-                return db.Purchases.FirstOrDefault(s => s.Id == saleId);
+                return db.Purchases.FirstOrDefault(s => s.Id == purchaseId);
             }
         }
 
-        public Purchase updateSale(TradingsystemDbContext context, int saleId, List<PurchaseItem> purchaseItems)
+        public Purchase updatePurchase(TradingsystemDbContext context, int purchaseId, List<PurchaseItem> purchaseItems)
         {
             using (var db = TradingsystemDbContext.GetContext(context))
             {
-                Purchase purchase = getSaleById(db, saleId);
+                Purchase purchase = getPurchaseById(db, purchaseId);
                 purchase.PurchaseItems.AddRange(purchaseItems);
                 db.SaveChanges();
                 return purchase;

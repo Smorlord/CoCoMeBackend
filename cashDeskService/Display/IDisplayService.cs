@@ -9,7 +9,7 @@ namespace cashDeskService.Display
 
         void showTotalInDisplay(double totalAmount);
 
-        void showStartSale(int saleId);
-        void showFinishSale();
+        void showStartPurchase(int saleId);
+        void showFinishPurchase();
     }
 }

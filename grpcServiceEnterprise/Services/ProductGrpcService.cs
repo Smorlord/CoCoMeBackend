@@ -15,10 +15,10 @@ namespace GRPC_Service.Services
     public class ProductGrpcService : ProductDTO.ProductDTOBase
     {
         private readonly ILogger<ProductGrpcService> _logger;
-        private ProductService service;
+        private IProductService service;
         private IStoreService storeService;
 
-        public ProductGrpcService(ILogger<ProductGrpcService> logger, ProductService productService, IStoreService storeService)
+        public ProductGrpcService(ILogger<ProductGrpcService> logger, IProductService productService, IStoreService storeService)
         {
             this.service = productService;
             this._logger = logger;

@@ -4,7 +4,7 @@ using data.EnterpriseData;
 
 namespace services.EnterpriseServices
 {
-    public class ProductServiceImplementation : ProductService
+    public class ProductServiceImplementation : IProductService
     {
 
         public ProductServiceImplementation()

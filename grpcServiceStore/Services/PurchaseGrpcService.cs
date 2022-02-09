@@ -1,32 +1,32 @@
 ﻿using Microsoft.Extensions.Logging;
 using Grpc.Core;
 using grpcClientStore;
-using GRPC_SaleStoreServer;
-using GRPC_SaleEnterpriseClient;
+using GRPC_PurchaseStoreServer;
+using GRPC_PurchaseEnterpriseClient;
 
 namespace grpcServiceStore.Services
 {
-    public class SaleGrpcService : SaleStoreDTO.SaleStoreDTOBase
+    public class PurchaseGrpcService : PurchaseStoreDTO.PurchaseStoreDTOBase
     {
-        private readonly ILogger<SaleGrpcService> _logger;
+        private readonly ILogger<PurchaseGrpcService> _logger;
         private IGrpcClientConnector grpcClientConnector;
 
-        public SaleGrpcService(ILogger<SaleGrpcService> logger, IGrpcClientConnector grpcClientConnector)
+        public PurchaseGrpcService(ILogger<PurchaseGrpcService> logger, IGrpcClientConnector grpcClientConnector)
         {
             this.grpcClientConnector = grpcClientConnector;
             this._logger = logger;
         }
 
-        public override Task<CreateSaleStoreDTOModel> CreateSaleStore(CreateSaleStoreDTOLookUpModel request, ServerCallContext context)
+        public override Task<CreatePurchaseStoreDTOModel> CreatePurchaseStore(CreatePurchaseStoreDTOLookUpModel request, ServerCallContext context)
         {
             try
             {
 
-                CreateSaleStoreDTOModel output = new CreateSaleStoreDTOModel();
+                CreatePurchaseStoreDTOModel output = new CreatePurchaseStoreDTOModel();
 
-                CreateSaleEnterpriseDTOModel response = grpcClientConnector.GetSaleEnterpriseDTOClient().CreateSaleEnterprise(new CreateSaleEnterpriseDTOLookUpModel { StoreId = request.StoreId });
+                CreatePurchaseEnterpriseDTOModel response = grpcClientConnector.GetPurchaseEnterpriseDTOClient().CreatePurchaseEnterprise(new CreatePurchaseEnterpriseDTOLookUpModel { StoreId = request.StoreId });
 
-                output.SaleId = response.SaleId;
+                output.PurchaseId = response.PurchaseId;
 
                 return Task.FromResult(output);
             }
@@ -37,12 +37,12 @@ namespace grpcServiceStore.Services
             }
         }
 
-        public override Task<UpdateSaleStoreDTOModel> UpdateSaleStore(UpdateSaleStoreDTOLookUpModel request, ServerCallContext context)
+        public override Task<UpdatePurchaseStoreDTOModel> UpdatePurchaseStore(UpdatePurchaseStoreDTOLookUpModel request, ServerCallContext context)
         {
             try
             {
                 // Entpacken der Store DTOS und in Enterprise DTOS mappen
-                UpdateSaleStoreDTOModel output = new UpdateSaleStoreDTOModel();
+                UpdatePurchaseStoreDTOModel output = new UpdatePurchaseStoreDTOModel();
                 List<ProductEnterpriseDTOLookUpModel> productSalesEnterprise = new List<ProductEnterpriseDTOLookUpModel>();
                 foreach (var storeProduct in request.ProductStoreDTOLookUpModel)
                 {
@@ -51,12 +51,12 @@ namespace grpcServiceStore.Services
 
                     productSalesEnterprise.Add(product);
                 }
-                UpdateSaleEnterpriseDTOLookUpModel data = new UpdateSaleEnterpriseDTOLookUpModel();
-                data.SaleId = request.SaleId;
+                UpdatePurchaseEnterpriseDTOLookUpModel data = new UpdatePurchaseEnterpriseDTOLookUpModel();
+                data.PurchaseId = request.PurchaseId;
                 data.ProductEnterpriseDTOLookUpModel.AddRange(productSalesEnterprise);
 
                 //Weiter reichen der Daten an den Enterprise Server
-                UpdateSaleEnterpriseDTOModel responseUpdate = this.grpcClientConnector.GetSaleEnterpriseDTOClient().UpdateSaleEnterprise(data);
+                UpdatePurchaseEnterpriseDTOModel responseUpdate = this.grpcClientConnector.GetPurchaseEnterpriseDTOClient().UpdatePurchaseEnterprise(data);
 
 
                 // Entpacken der Enterprise DTOS und in Store DTOS mappen
@@ -82,7 +82,7 @@ namespace grpcServiceStore.Services
                         output.SalePriceTotal += product.SalePrice;
                     }
                 }
-                output.SaleId = responseUpdate.SaleId;
+                output.PurchaseId = responseUpdate.PurchaseId;
                 output.ProductStoreDTOModel.AddRange(productSalesStore);
 
                 return Task.FromResult(output);

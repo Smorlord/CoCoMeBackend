@@ -5,9 +5,9 @@ namespace cashDeskService.Session
     public interface ISessionService
     {
         void init();
-        void updateSaleId(int saleId);
+        void updatePurchaseId(int purchaseId);
         int getStoreId();
-        int getSaleId();
+        int getPurchaseId();
 
         void addScannedProduct(ProductScannedDTOModel scannedProduct);
 

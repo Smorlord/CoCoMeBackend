@@ -1,8 +1,8 @@
 ﻿using Grpc.Net.Client;
 using GRPC_Client;
-using GRPC_SaleStoreClient;
+using GRPC_PurchaseStoreClient;
 using static GRPC_Client.ProductScannedDTO;
-using static GRPC_SaleStoreClient.SaleStoreDTO;
+using static GRPC_PurchaseStoreClient.PurchaseStoreDTO;
 
 namespace cashDeskGrpcClient
 {
@@ -10,13 +10,13 @@ namespace cashDeskGrpcClient
     {
 
         private ProductScannedDTOClient productCDSDTOClient;
-        private SaleStoreDTOClient saleStoreDTOClient;
+        private PurchaseStoreDTOClient saleStoreDTOClient;
         private GrpcChannel channel;
         public void connect()
         {
             this.channel = GrpcChannel.ForAddress("https://localhost:7134");
             this.productCDSDTOClient = new ProductScannedDTO.ProductScannedDTOClient(channel);
-            this.saleStoreDTOClient = new SaleStoreDTO.SaleStoreDTOClient(channel);
+            this.saleStoreDTOClient = new PurchaseStoreDTO.PurchaseStoreDTOClient(channel);
         }
 
         public ProductScannedDTOClient getProductScannedDTOClient()
@@ -24,7 +24,7 @@ namespace cashDeskGrpcClient
             return productCDSDTOClient;
         }
 
-        public SaleStoreDTOClient getSaleStoreDTOClient()
+        public PurchaseStoreDTOClient getPurchaseStoreDTOClient()
         {
             return saleStoreDTOClient;
         }
