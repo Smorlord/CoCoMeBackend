@@ -11,7 +11,7 @@ namespace cashDeskService.BankServer
     {
 
         void init();
-        TransactionContext createContext(int amount);
+        TransactionContext createContext(long amount);
         void authorizePayment(string contextId, string data, string token);
     }
 }

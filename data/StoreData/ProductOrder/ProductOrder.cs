@@ -7,7 +7,7 @@
         public DateOnly DeliveryDate { get; set; }
         public DateOnly OrderingDate { get; set; }
 
-        public List<OrderEntry> OrderEntries = new List<OrderEntry>();
+        public virtual List<OrderEntry> OrderEntries { get; set; }
 
 
     }

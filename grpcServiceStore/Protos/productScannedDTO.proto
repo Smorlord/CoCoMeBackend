@@ -11,13 +11,15 @@ service ProductScannedDTO {
 // Request
 message ProductScannedDTOLookUpModel {
   int32 Barcode = 1;
+  int32 StoreId = 2;
 }
 
 // Response
 message ProductScannedDTOModel {
 	int32 Id = 1;
 	int32 Barcode = 2;
-	double PurchasePrice = 3;
+	double SellingPrice = 3;
 	string Name = 4;
+	double SalePrice = 5;
 }
 

@@ -11,7 +11,7 @@ namespace cashDeskService.CardReader
     {
 
         void init();
-        void pay(int amount);
+        void pay(long amount);
 
         void abort(string message);
     }

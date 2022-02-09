@@ -18,9 +18,29 @@ namespace cashDeskService.Display
             displayControllerClient = mockServiceConnector.GetDisplayControllerClient();
         }
 
-        public void showInDisplay(ProductScannedDTOModel item)
+        public void showFinishSale()
         {
-            displayControllerClient.SetDisplayText($"{item.Name}: {item.PurchasePrice}€");
+            displayControllerClient.SetDisplayText("Der Betrag wurde beglichen, vielen Dank für Ihren Einkauf");
+        }
+
+        public void showItemInDisplay(ProductScannedDTOModel item)
+        {
+            if (item.SalePrice == -1) { 
+                displayControllerClient.SetDisplayText($"{item.Name}: {item.SellingPrice}€");
+            } else
+            {
+                displayControllerClient.SetDisplayText($"{item.Name}: {item.SalePrice}€ statt {item.SellingPrice}€");
+            }
+        }
+
+        public void showStartSale(int saleId)
+        {
+            displayControllerClient.SetDisplayText($"Einkauf {saleId} gestartet, bitte Items scannen");
+        }
+
+        public void showTotalInDisplay(double totalAmount)
+        {
+            displayControllerClient.SetDisplayText($"Der Gesamtbetrag des Einkaufs beträgt {totalAmount}€");
         }
     }
 }

@@ -23,7 +23,7 @@ namespace cashDeskService.CardReader
             cardReaderServiceClient = mockServiceConnector.GetCardReaderServiceClient();
         }
 
-        public void pay(int amount)
+        public void pay(long amount)
         {
             TransactionContext context = bankService.createContext(amount);
             Tecan.Sila2.IObservableCommand<AuthorizationData> authorizeCommand = cardReaderServiceClient.Authorize(amount, context.Challenge);

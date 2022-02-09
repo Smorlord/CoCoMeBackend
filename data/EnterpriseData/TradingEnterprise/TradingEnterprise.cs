@@ -7,7 +7,7 @@ namespace data.EnterpriseData
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public List<Store> products { get; } = new List<Store>();
+        public virtual List<Store> products { get; }
 
 
     }

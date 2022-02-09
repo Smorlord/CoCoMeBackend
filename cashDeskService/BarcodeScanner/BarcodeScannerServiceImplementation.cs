@@ -1,6 +1,8 @@
 ﻿using cashDeskGrpcClient;
 using cashDeskService.Display;
+using cashDeskService.Session;
 using GRPC_Client;
+using GRPC_SaleStoreClient;
 using mockServiceConnector;
 using TestConsole.BarcodeScannerService;
 
@@ -12,14 +14,16 @@ namespace cashDeskService.BarcodeScanner
         private MockServiceConnector mockServiceConnector;
         private IGrpcClientConnector grpcClientConnector;
         private IDisplayService displayService;
+        private ISessionService sessionService;
         private BarcodeScannerServiceClient barcodeScannerClient;
         private Tecan.Sila2.IIntermediateObservableCommand<string> readBarcodes;
 
-        public BarcodeScannerServiceImplementation(MockServiceConnector mockService, IGrpcClientConnector grpcClientConnector, IDisplayService displayService)
+        public BarcodeScannerServiceImplementation(MockServiceConnector mockService, IGrpcClientConnector grpcClientConnector, IDisplayService displayService, ISessionService sessionService)
         {
             this.mockServiceConnector = mockService;
             this.grpcClientConnector = grpcClientConnector;
             this.displayService = displayService;
+            this.sessionService = sessionService;
         }
 
         public void init()
@@ -32,8 +36,10 @@ namespace cashDeskService.BarcodeScanner
         public void barcodeScanned(int barcode)
         {
             ProductScannedDTO.ProductScannedDTOClient client = grpcClientConnector.getProductScannedDTOClient();
-            ProductScannedDTOModel response = client.GetProductScannedDTOInfo(new ProductScannedDTOLookUpModel { Barcode = barcode });
-            displayService.showInDisplay(response);
+            ProductScannedDTOModel response = client.GetProductScannedDTOInfo(new ProductScannedDTOLookUpModel { Barcode = barcode, StoreId = sessionService.getStoreId() });
+            displayService.showItemInDisplay(response);
+
+            sessionService.addScannedProduct(response);
         }
 
         async private void listenBarcodes(Tecan.Sila2.IIntermediateObservableCommand<string> readBarcodes)

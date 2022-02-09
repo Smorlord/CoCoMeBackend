@@ -1,9 +1,13 @@
-﻿namespace cashDeskService.Session
+﻿using GRPC_Client;
+
+namespace cashDeskService.Session
 {
     public class SessionServiceImplementation : ISessionService
     {
         private int storeId;
         private int saleId;
+        private double totalPrice;
+        private List<ProductScannedDTOModel> scannedProducts = new List<ProductScannedDTOModel>();
 
         public void init()
         {
@@ -23,6 +27,31 @@
         public void updateSaleId(int saleId)
         {
             this.saleId = saleId;
+        }
+
+        public void addScannedProduct(ProductScannedDTOModel scannedProduct)
+        {
+            this.scannedProducts.Add(scannedProduct);
+        }
+
+        public void clearScannedProduct()
+        {
+            this.scannedProducts.Clear();
+        }
+
+        public List<ProductScannedDTOModel> getScannedProducts()
+        {
+            return scannedProducts;
+        }
+
+        public void setTotalPrice(double totalPrice)
+        {
+            this.totalPrice = totalPrice;
+        }
+
+        public double getTotalPrice()
+        {
+            return this.totalPrice;
         }
     }
 }

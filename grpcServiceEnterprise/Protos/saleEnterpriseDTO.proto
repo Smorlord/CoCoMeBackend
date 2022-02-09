@@ -5,7 +5,7 @@ package saleEnterpriseDTO;
 
 service SaleEnterpriseDTO {
   rpc CreateSaleEnterprise(CreateSaleEnterpriseDTOLookUpModel) returns (CreateSaleEnterpriseDTOModel);
-  //rpc UpdateSaleEnterprise(UpdateSaleEnterpriseDTOLookUpModel) returns (UpdateSaleEnterpriseDTOModel);
+  rpc UpdateSaleEnterprise(UpdateSaleEnterpriseDTOLookUpModel) returns (UpdateSaleEnterpriseDTOModel);
 }
 
 // Request
@@ -19,22 +19,26 @@ message CreateSaleEnterpriseDTOModel {
 }
 
 // Request
-/*message UpdateSaleEnterpriseDTOLookUpModel {
+message UpdateSaleEnterpriseDTOLookUpModel {
   int32 SaleId = 1;
-  repeated ProductSaleEnterpriseDTOModel productSuppliertDTOModel = 5;
+  repeated ProductEnterpriseDTOLookUpModel ProductEnterpriseDTOLookUpModel = 5;
 }
 
 // Response
 message UpdateSaleEnterpriseDTOModel {
 	int32 SaleId = 1;
-	repeated ProductSaleEnterpriseDTOModel productSaleEnterpriseDTOModel = 3;
+	repeated ProductEnterpriseDTOModel ProductEnterpriseDTOModel = 3;
 }
 
 
-message ProductSaleEnterpriseDTOModel {
+/*message ProductSaleEnterpriseDTOModel {
 	int32 Id = 1;
-	int32 ProductEnterpriseDTOModel = 2;
+	ProductEnterpriseDTOModel ProductEnterpriseDTOModel = 2;
 	double salePrice = 3;
+}*/
+
+message ProductEnterpriseDTOLookUpModel {
+	int32 Id = 1;
 }
 
 // Response
@@ -43,13 +47,6 @@ message ProductEnterpriseDTOModel {
 	int32 Barcode = 2;
 	double PurchasePrice = 3;
 	string Name = 4;
-	repeated ProductSupplierEnterpriseDTOModel productSupplierEnterpriseDTOModel = 5;
+	double SalePrice = 5;
 }
 
-
-message ProductSupplierEnterpriseDTOModel {
-	int32 Id = 1;
-	int32 Barcode = 2;
-	double PurchasePrice = 3;
-	string Name = 4;
-}*/

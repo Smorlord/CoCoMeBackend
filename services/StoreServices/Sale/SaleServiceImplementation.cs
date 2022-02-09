@@ -20,35 +20,35 @@ namespace services.StoreServices
         {
         }
 
-        public Sale createSale(int storeId)
+        public Purchase createSale(TradingsystemDbContext context, int storeId)
         {
-            using (var db = new TradingsystemDbContext())
+            using (var db = TradingsystemDbContext.GetContext(context))
             {
-                Sale sale = new Sale();
-                sale.SaleDateTime = DateTime.Now;
-                sale.StoreId = storeService.getStore(storeId).Id;
-                db.Add(sale);
+                Purchase purchase = new Purchase();
+                purchase.SaleDateTime = DateTime.Now;
+                purchase.StoreId = storeService.getStore(context, storeId).Id;
+                db.Add(purchase);
                 db.SaveChanges();
-                return sale;    
+                return purchase;    
             }
         }
 
-        public Sale getSaleById(int saleId)
+        public Purchase getSaleById(TradingsystemDbContext context, int saleId)
         {
-            using (var db = new TradingsystemDbContext())
+            using (var db = TradingsystemDbContext.GetContext(context))
             {
-                return db.Sales.First(s => s.Id == saleId);
+                return db.Purchases.FirstOrDefault(s => s.Id == saleId);
             }
         }
 
-        public Sale updateSale(int saleId, List<ProductSale> products)
+        public Purchase updateSale(TradingsystemDbContext context, int saleId, List<PurchaseItem> purchaseItems)
         {
-            using (var db = new TradingsystemDbContext())
+            using (var db = TradingsystemDbContext.GetContext(context))
             {
-                Sale sale = getSaleById(saleId);
-                //sale.ProductSales.AddRange(products);
+                Purchase purchase = getSaleById(db, saleId);
+                purchase.PurchaseItems.AddRange(purchaseItems);
                 db.SaveChanges();
-                return sale;
+                return purchase;
             }
         }
     }

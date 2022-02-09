@@ -24,12 +24,13 @@ namespace grpcServiceStore.Services
             {
                 ProductScannedDTOModel output = new ProductScannedDTOModel();
                 
-                ProductDTOModel response = grpcClientConnector.GetProductDTOClient().GetProductDTOInfo(new ProductDTOLookUpModel{ Barcode = request.Barcode });
+                ProductDTOModel response = grpcClientConnector.GetProductDTOClient().GetProductDTOInfo(new ProductDTOLookUpModel{ Barcode = request.Barcode, StoreId = request.StoreId });
 
                 output.Id = response.Id;
                 output.Barcode = response.Barcode;
                 output.Name = response.Name;
-                output.PurchasePrice = response.PurchasePrice;
+                output.SellingPrice = response.SellingPrice;
+                output.SalePrice = response.SalePrice;
 
                 return Task.FromResult(output);
             }

@@ -4,10 +4,10 @@
     {
         public int Id { get; set; }
         public int Barcode { get; set; }
-        public double PurchasePrice { get; set; }
+        public double SellingPrice { get; set; }
         public string Name { get; set; }
 
-        // public ProductSupplier ProductSupplier { get; set; }
+        //public virtual ProductSupplier ProductSupplier { get; set; }
 
     }
 }

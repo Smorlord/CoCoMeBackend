@@ -30,7 +30,7 @@ namespace cashDeskService.BankServer
             bankServerClient.AuthorizePayment(contextId, data, token);
         }
 
-        public TransactionContext createContext(int amount)
+        public TransactionContext createContext(long amount)
         {
             return bankServerClient.CreateContext(amount);
         }

@@ -1,8 +1,10 @@
-﻿namespace cashDeskService.Printer
+﻿using GRPC_SaleStoreClient;
+
+namespace cashDeskService.Printer
 {
     public interface IPrinterService
     {
         void init();
-        void print();
+        void printItems(List<ProductStoreDTOModel> ProductStoreDTOModels);
     }
 }

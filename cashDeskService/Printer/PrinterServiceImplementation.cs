@@ -1,4 +1,5 @@
-﻿using mockServiceConnector;
+﻿using GRPC_SaleStoreClient;
+using mockServiceConnector;
 using TestConsole.PrintingService;
 
 namespace cashDeskService.Printer
@@ -17,10 +18,22 @@ namespace cashDeskService.Printer
             this.printingServiceClient = this.mockServiceConnector.GetPrintingServiceClient();
         }
 
-        public void print()
+        public void printItems(List<ProductStoreDTOModel> ProductStoreDTOModels)
         {
-            /*foreach (var productSale in sale.products)
-                this.printingServiceClient.PrintLine(productSale.Product.Name + " " + productSale.Product.PurchasePrice + "€");*/
+            this.printingServiceClient.PrintLine("------------Neuer Einkauf--------------");
+
+            foreach (var product in ProductStoreDTOModels)
+            {
+                if (product.SalePrice == -1)
+                {
+                    this.printingServiceClient.PrintLine($"{product.Name}: {product.PurchasePrice}€");
+                } else
+                {
+                    this.printingServiceClient.PrintLine($"{product.Name}: {product.SalePrice}€ statt {product.PurchasePrice}€");
+                }
+            }
+
+            this.printingServiceClient.PrintLine("------------Ende des Einkaufs--------------");
         }
     }
 }

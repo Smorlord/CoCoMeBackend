@@ -21,35 +21,31 @@ message CreateSaleStoreDTOModel {
 // Request
 message UpdateSaleStoreDTOLookUpModel {
   int32 SaleId = 1;
-  repeated ProductSaleStoreDTOModel productSaleStoreDTOModel = 5;
+  repeated ProductStoreDTOLookUpModel ProductStoreDTOLookUpModel = 2;
 }
 
 // Response
 message UpdateSaleStoreDTOModel {
 	int32 SaleId = 1;
-	repeated ProductSaleStoreDTOModel productSaleStoreDTOModel = 3;
+	repeated ProductStoreDTOModel ProductStoreDTOModel = 2;
+	double SalePriceTotal = 3;
 }
 
 
-message ProductSaleStoreDTOModel {
+/*message ProductSaleStoreDTOModel {
 	int32 Id = 1;
-	int32 ProductStoreDTOModel = 2;
+	ProductStoreDTOModel ProductStoreDTOModel = 2;
 	double salePrice = 3;
+}*/
+
+message ProductStoreDTOLookUpModel {
+	int32 Id = 1;
 }
 
-// Response
 message ProductStoreDTOModel {
 	int32 Id = 1;
 	int32 Barcode = 2;
 	double PurchasePrice = 3;
 	string Name = 4;
-	repeated ProductSupplierStoreDTOModel productSupplierStoreDTOModel = 5;
-}
-
-
-message ProductSupplierStoreDTOModel {
-	int32 Id = 1;
-	int32 Barcode = 2;
-	double PurchasePrice = 3;
-	string Name = 4;
+	double SalePrice = 5;
 }

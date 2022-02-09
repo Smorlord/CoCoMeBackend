@@ -1,5 +1,8 @@
 ﻿using cashDeskGrpcClient;
+using cashDeskService.Display;
+using cashDeskService.Printer;
 using cashDeskService.Session;
+using cashDeskService.CardReader;
 using GRPC_SaleStoreClient;
 using mockServiceConnector;
 using Tecan.Sila2;
@@ -13,15 +16,20 @@ namespace cashDeskService.Cashbox
         private MockServiceConnector mockServiceConnector;
         private CashboxServiceClient cashboxClient;
         private IGrpcClientConnector grpcClientConnector;
+        private IDisplayService displayService;
         private ISessionService sessionService;
+        private IPrinterService printerService;
+        private CardReader.ICardReaderService cardReaderService;
         private Tecan.Sila2.IIntermediateObservableCommand<CashboxButton> cashboxButtons;
 
-        public CashboxServiceImplementation(MockServiceConnector mockService, IGrpcClientConnector grpcClientConnector, ISessionService sessionService)
+        public CashboxServiceImplementation(MockServiceConnector mockService, IGrpcClientConnector grpcClientConnector, ISessionService sessionService, IDisplayService displayService, IPrinterService printerService, CardReader.ICardReaderService cardReaderService)
         {
             this.mockServiceConnector = mockService;
             this.grpcClientConnector = grpcClientConnector;
             this.sessionService = sessionService;
-
+            this.displayService = displayService;
+            this.printerService = printerService;
+            this.cardReaderService = cardReaderService;
         }
         public void init()
         {
@@ -37,17 +45,40 @@ namespace cashDeskService.Cashbox
 
         public void FinishSale()
         {
-            Console.WriteLine("FinishSale");
+
+            List<ProductStoreDTOLookUpModel> products = new List<ProductStoreDTOLookUpModel>();
+            foreach (var scannedProduct in sessionService.getScannedProducts())
+            {
+                ProductStoreDTOLookUpModel product = new ProductStoreDTOLookUpModel();
+                product.Id = scannedProduct.Id;
+                products.Add(product);
+            }
+            UpdateSaleStoreDTOLookUpModel data = new UpdateSaleStoreDTOLookUpModel();
+            data.SaleId = sessionService.getSaleId();
+            data.ProductStoreDTOLookUpModel.AddRange(products);
+            UpdateSaleStoreDTOModel responseUpdate = this.grpcClientConnector.getSaleStoreDTOClient().UpdateSaleStore(data);
+            displayService.showTotalInDisplay(responseUpdate.SalePriceTotal);
+            printerService.printItems(responseUpdate.ProductStoreDTOModel.ToList());
+            sessionService.setTotalPrice(responseUpdate.SalePriceTotal);
         }
 
         public void PayWithCard()
         {
-            throw new NotImplementedException();
+            try
+            {
+                cardReaderService.pay(Convert.ToInt64(sessionService.getTotalPrice() * 100));
+            }
+            catch (Exception ex)
+            {
+                cardReaderService.abort(ex.Message);
+            }
         }
 
         public void PayWithCash()
         {
-            throw new NotImplementedException();
+            displayService.showFinishSale();
+            this.sessionService.updateSaleId(-1);
+            this.sessionService.clearScannedProduct();
         }
 
         public void StartNewSale()
@@ -56,7 +87,7 @@ namespace cashDeskService.Cashbox
             SaleStoreDTO.SaleStoreDTOClient client = this.grpcClientConnector.getSaleStoreDTOClient();
             CreateSaleStoreDTOModel response = client.CreateSaleStore(model);
             this.sessionService.updateSaleId(response.SaleId);
-            Console.WriteLine(response.SaleId.ToString());
+            displayService.showStartSale(sessionService.getSaleId());
         }
 
         async private void ButtonListener(IIntermediateObservableCommand<CashboxButton> cashboxButtons)
