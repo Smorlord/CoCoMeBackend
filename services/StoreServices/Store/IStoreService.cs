@@ -22,5 +22,8 @@ namespace services.StoreServices
         void removeProductSale(TradingsystemDbContext context, int StoreId, int ProductSaleId);
 
         ProductSale getProductSaleById(TradingsystemDbContext context, int ProductSaleId);
+
+        List<StockItem> getStockItemByStore(TradingsystemDbContext context, int StoreId);
+        void addStockItemByStore(TradingsystemDbContext context, int StoreId, StockItem StockItem);
     }
 }

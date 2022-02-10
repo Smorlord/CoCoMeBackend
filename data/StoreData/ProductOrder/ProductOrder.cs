@@ -4,8 +4,9 @@
     {
 
         public int Id { get; set; }
-        public DateOnly DeliveryDate { get; set; }
-        public DateOnly OrderingDate { get; set; }
+        public int StoreId { get; set; }
+        public DateTime DeliveryDate { get; set; }
+        public DateTime OrderingDate { get; set; }
 
         public virtual List<OrderEntry> OrderEntries { get; set; }
 

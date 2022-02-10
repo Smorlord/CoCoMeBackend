@@ -1,4 +1,5 @@
 ﻿using data;
+using data.EnterpriseData;
 using data.StoreData;
 using services.EnterpriseServices;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,12 @@ namespace services.StoreServices
             {
                 if (getStores(context).Count == 0)
                 {
+                    Product product1 = new Product();
+                    product1.Name = "Sack Kartoffeln";
+                    product1.Barcode = 9999;
+                    product1.SellingPrice = 3.14;
+                    product1.Id = 832467;
+
                     Store store1 = new Store();
                     store1.Name = "Edeka Nolte";
                     store1.Location = "Wiesbaden";
@@ -30,6 +37,22 @@ namespace services.StoreServices
                     context.SaveChanges();
                 }
             }
+
+            using (var context = new TradingsystemDbContext())
+            {
+                if (getStockItemByStore(context, 1).Count == 0)
+                {
+                    StockItem stockItem1 = new StockItem();
+                    stockItem1.SalesPrice = 0;
+                    stockItem1.MinStock = 100;
+                    stockItem1.MaxStock = 200;
+                    stockItem1.Product = productService.getProductByBarcode(context, 1111);
+
+                    addStockItemByStore(context, 1, stockItem1);
+                    context.SaveChanges();
+                }
+            }
+
             using (var context = new TradingsystemDbContext()) 
             {
                 if (getProductSales(context, 1).Count == 0)
@@ -129,6 +152,25 @@ namespace services.StoreServices
             {
                 ProductSale productSale = db.ProductSales.Include(p => p.Product).FirstOrDefault(p => p.Id == ProductSaleId);
                 return productSale;
+            }
+        }
+
+
+        public List<StockItem> getStockItemByStore(TradingsystemDbContext context, int StoreId)
+        {
+            Store store = getStore(context, StoreId);
+            return store.StockItems.ToList();
+        }
+
+        public void addStockItemByStore(TradingsystemDbContext context, int StoreId, StockItem StockItem)
+        {
+            using (var db = TradingsystemDbContext.GetContext(context))
+            {
+                Store store = getStore(db, StoreId);
+                store.StockItems.Add(StockItem);
+                db.SaveChanges();
+
+
             }
         }
     }

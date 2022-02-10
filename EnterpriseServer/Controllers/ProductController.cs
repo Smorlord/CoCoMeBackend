@@ -19,6 +19,7 @@ namespace EnterpriseServer.Controllers
             this.productService = productService;
         }
 
+        /* UC 3 - order product - response: all products */
         [HttpGet]
         [Route("/products")]
         public List<Product> GetAllProducts()
