@@ -8,16 +8,15 @@ namespace services.StoreServices
 {
     public class StoreServiceImplementation : IStoreService
     {
-
         private IProductService productService;
 
         public StoreServiceImplementation(IProductService productService)
         {
             this.productService = productService;
         }
+
         public void init()
         {
-
             using (var context = new TradingsystemDbContext())
             {
                 if (getStores(context).Count == 0)
@@ -53,7 +52,7 @@ namespace services.StoreServices
                 }
             }
 
-            using (var context = new TradingsystemDbContext()) 
+            using (var context = new TradingsystemDbContext())
             {
                 if (getProductSales(context, 1).Count == 0)
                 {
@@ -80,9 +79,12 @@ namespace services.StoreServices
         {
             using (var db = TradingsystemDbContext.GetContext(context))
             {
-                return db.Stores.Include(s => s.ProductSales).FirstOrDefault(p => p.Id == StoreId);
+                return db.Stores
+                    .Include(s => s.ProductSales).ThenInclude(p => p.Product)
+                    .Include(s => s.StockItems)
+                    .Include(s => s.Sales)
+                    .FirstOrDefault(p => p.Id == StoreId);
             }
-
         }
 
         public List<Store> getStores(TradingsystemDbContext context)
@@ -97,19 +99,19 @@ namespace services.StoreServices
                 {
                     return new List<Store>();
                 }
-                
             }
         }
 
         public ProductSale getProductSaleByProductId(TradingsystemDbContext context, int StoreId, int ProductId)
-        {       
-            foreach(var productSale in getProductSales(context, StoreId))
+        {
+            foreach (var productSale in getProductSales(context, StoreId))
             {
                 if (productSale.Product.Id == ProductId)
                 {
                     return productSale;
                 }
             }
+
             return null;
         }
 
@@ -131,8 +133,6 @@ namespace services.StoreServices
                 //db.Entry(store).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 //db.Update(store);
                 db.SaveChanges();
-                
-
             }
         }
 
@@ -150,7 +150,8 @@ namespace services.StoreServices
         {
             using (var db = TradingsystemDbContext.GetContext(context))
             {
-                ProductSale productSale = db.ProductSales.Include(p => p.Product).FirstOrDefault(p => p.Id == ProductSaleId);
+                ProductSale productSale =
+                    db.ProductSales.Include(p => p.Product).FirstOrDefault(p => p.Id == ProductSaleId);
                 return productSale;
             }
         }
@@ -169,8 +170,6 @@ namespace services.StoreServices
                 Store store = getStore(db, StoreId);
                 store.StockItems.Add(StockItem);
                 db.SaveChanges();
-
-
             }
         }
     }
