@@ -8,6 +8,7 @@ namespace cashDeskService.Session
         private int saleId = -1;
         private double totalPrice = 0;
         private List<ProductScannedDTOModel> scannedProducts = new List<ProductScannedDTOModel>();
+        private Boolean expressCheckOut = false;
 
         public void init()
         {
@@ -53,5 +54,15 @@ namespace cashDeskService.Session
         {
             return this.totalPrice;
         }
+
+        public Boolean getExpressCheckOut()
+        {
+            return this.expressCheckOut;
+        }
+
+        public void setExpressCheckOut(Boolean expressCheckOut) { 
+            this.expressCheckOut = expressCheckOut; 
+        }
+
     }
 }

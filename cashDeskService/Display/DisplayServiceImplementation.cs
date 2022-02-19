@@ -25,9 +25,11 @@ namespace cashDeskService.Display
 
         public void showItemInDisplay(ProductScannedDTOModel item)
         {
-            if (item.SalePrice == -1) { 
+            if (item.SalePrice == -1)
+            {
                 displayControllerClient.SetDisplayText($"{item.Name}: {item.SellingPrice}€");
-            } else
+            }
+            else
             {
                 displayControllerClient.SetDisplayText($"{item.Name}: {item.SalePrice}€ statt {item.SellingPrice}€");
             }
@@ -46,6 +48,23 @@ namespace cashDeskService.Display
         public void showTotalInDisplay(double totalAmount)
         {
             displayControllerClient.SetDisplayText($"Der Gesamtbetrag des Einkaufs beträgt {totalAmount}€");
+        }
+
+        public void changeExpressCheckOut(Boolean expressCheckOut) 
+        {
+            if(expressCheckOut) 
+            {
+                displayControllerClient.SetDisplayText($"Express Checkout aktiviert!");
+            }
+            else
+            {
+                displayControllerClient.SetDisplayText($"Express Checkout deaktiviert!");
+            }
+        }
+
+        public void showIsExpressLock()
+        {
+            displayControllerClient.SetDisplayText("Keine Kartenzahlung möglich, der Express Check Out ist aktiviert!");
         }
     }
 }
