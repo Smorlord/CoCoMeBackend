@@ -24,6 +24,7 @@ namespace services.StoreServices
         ProductSale getProductSaleById(TradingsystemDbContext context, int ProductSaleId);
 
         List<StockItem> getStockItemByStore(TradingsystemDbContext context, int StoreId);
+        void updateStockItemsInStore(TradingsystemDbContext context, int storeId, List<OrderEntry> entries);
         void addStockItemByStore(TradingsystemDbContext context, int StoreId, StockItem StockItem);
 
 

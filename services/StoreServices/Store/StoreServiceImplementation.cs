@@ -102,6 +102,18 @@ namespace services.StoreServices
             }
         }
 
+        public void updateStockItemsInStore(TradingsystemDbContext context, int storeId, List<OrderEntry> entries)
+        {
+            using var db = TradingsystemDbContext.GetContext(context);
+            Store store = getStore(db, storeId);
+            store.StockItems.ForEach(i =>
+            {
+                var entry = entries.Find(e => e.ProductId == i.Product.Id);
+                i.Amount = i.Amount + entry?.Amount ?? 0;
+            });
+            db.SaveChanges();
+        }
+
         public ProductSale getProductSaleByProductId(TradingsystemDbContext context, int StoreId, int ProductId)
         {
             foreach (var productSale in getProductSales(context, StoreId))
