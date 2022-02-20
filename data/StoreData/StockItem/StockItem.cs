@@ -14,6 +14,11 @@ namespace data.StoreData
 
         public virtual Product Product { get; set; }
 
+    }
 
+    public class UpdateStockItemPrice
+    {
+        public int Id { get; set; }
+        public double SalesPrice { get; set; }
     }
 }

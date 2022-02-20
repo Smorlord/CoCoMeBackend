@@ -172,5 +172,22 @@ namespace services.StoreServices
                 db.SaveChanges();
             }
         }
+
+        public StockItem? updateStockItemSalePrice(TradingsystemDbContext context, int storeId, int itemId, double salePrice)
+        {
+            using var db = TradingsystemDbContext.GetContext(context);
+            Store store = getStore(db, storeId);
+            var item = store.StockItems.Find(i => i.Id == itemId);
+            if (item != null)
+            {
+                item.SalesPrice = salePrice;
+                db.SaveChanges();
+                return item;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }
