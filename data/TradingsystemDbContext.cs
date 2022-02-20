@@ -28,7 +28,6 @@ namespace data
 
             //Database.EnsureDeleted();
             Database.EnsureCreated();
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -39,6 +38,7 @@ namespace data
         }
 
         protected int UsingCount = 0;
+
         public static TradingsystemDbContext GetContext(TradingsystemDbContext context)
         {
             if (context != null)
@@ -49,8 +49,10 @@ namespace data
             {
                 context = new TradingsystemDbContext();
             }
+
             return context;
         }
+
         public override void Dispose()
         {
             if (UsingCount == 0)
@@ -81,7 +83,9 @@ namespace data
             modelBuilder.Entity<Store>()
                 .HasMany(s => s.ProductSales)
                 .WithOne(p => p.Store);
-        }
 
+            modelBuilder.Entity<ProductOrder>()
+                .HasMany(e => e.OrderEntries).WithOne(e => e.ProductOrder).OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

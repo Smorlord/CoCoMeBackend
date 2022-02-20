@@ -1,5 +1,6 @@
 ﻿using data;
 using data.StoreData;
+using Microsoft.EntityFrameworkCore;
 
 namespace services.StoreServices
 {
@@ -18,7 +19,7 @@ namespace services.StoreServices
         {
             using (var db = new TradingsystemDbContext())
             {
-                return db.ProductOrders.First(p => p.Id == productOrderId);
+                return db.ProductOrders.Include(p => p.OrderEntries).First(p => p.Id == productOrderId);
             }
         }
 
