@@ -1,5 +1,4 @@
 ﻿using data;
-using data.EnterpriseData;
 using data.StoreData;
 using Microsoft.AspNetCore.Mvc;
 using services.StoreServices;
@@ -48,7 +47,7 @@ namespace EnterpriseServer.Controllers
             using (var db = TradingsystemDbContext.GetContext(context))
             {
                 return storeService.getStore(context,storeId);  // In a real production, you would send the
-                                                        // necessary data to reduce the risk
+                                                                // necessary data to reduce the risk
             }
         }
 

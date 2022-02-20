@@ -89,15 +89,8 @@ namespace services.StoreServices
         {
             using (var db = TradingsystemDbContext.GetContext(context))
             {
-                if (db.Stores != null)
-                {
-                    return db.Stores.ToList();
-                }
-                else
-                {
-                    return new List<Store>();
-                }
-                
+                return db.Stores != null ? db.Stores.ToList() : new List<Store>();
+
             }
         }
 

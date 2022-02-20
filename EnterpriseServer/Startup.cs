@@ -19,6 +19,8 @@ namespace EnterpriseServer
             services.AddSingleton<IProductService, ProductServiceImplementation>();
             services.AddSingleton<IPurchaseService, PurchaseServiceImplementation>();
             services.AddSingleton<IStoreService, StoreServiceImplementation>();
+            services.AddSingleton<IOrderService, OrderServiceImplementation>();
+            services.AddSingleton<IDeliveryReportService, DeliveryReportServiceImplementation>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

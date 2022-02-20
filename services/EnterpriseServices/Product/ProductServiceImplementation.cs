@@ -69,13 +69,7 @@ namespace services.EnterpriseServices
         {
             using (var db = TradingsystemDbContext.GetContext(context))
             {
-                if (db.Products != null)
-                {
-                    return db.Products.ToList();
-                } else
-                {
-                    return new List<Product>();
-                }
+                return db.Products != null ? db.Products.ToList() : new List<Product>();
             }
             
         }

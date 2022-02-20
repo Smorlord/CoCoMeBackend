@@ -91,6 +91,18 @@ namespace GRPC_Service.Services
                             product.SalePrice = -1;
                         }
 
+
+                        // Aus den Stockitems des Stores muss das Stockitem gefunden werden und die Anzahl um eins reduziert werden
+                        storeService.getStore(db, PurchaseResponse.Store.Id).StockItems.ForEach(item =>
+                        {
+                            if(item.Product.Id == purchaseItem.Product.Id)
+                            {
+                                item.Amount--;
+                            }
+                        });
+                        db.SaveChanges();
+
+
                         productSalesEnterprise.Add(product);
                     }
                     output.ProductEnterpriseDTOModel.AddRange(productSalesEnterprise);

@@ -12,5 +12,6 @@ namespace services.StoreServices
         void addProductOrder(ProductOrder productOrder);
         ProductOrder getProductOrder(int productOrderId);
         void removeProductOrder(int productOrderId);
+        List<ProductOrder> getAllProductOrders();
     }
 }
