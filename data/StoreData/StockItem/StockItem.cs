@@ -12,6 +12,10 @@ namespace data.StoreData
 
         public int MaxStock { get; set; }
 
+        public string? IsReserved { get; set; }
+
+        public bool IsExpected { get; set; }
+
         public virtual Product Product { get; set; }
 
 
