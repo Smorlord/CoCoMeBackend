@@ -15,7 +15,8 @@ namespace data
         public DbSet<Store> Stores { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductSupplier> ProductSuppliers { get; set; }
-
+        public DbSet<DeliveryReports> DeliveryReports { get; set; } 
+        public DbSet<ExchangeEntry> ExchangeEntry { get; set; }
         public DbSet<TradingEnterprise> TradingEnterprises { get; set; }
         public string DbPath { get; }
 

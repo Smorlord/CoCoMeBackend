@@ -16,5 +16,8 @@ namespace cashDeskService.Session
 
         void setTotalPrice(double totalPrice);
         double getTotalPrice();
+
+        Boolean getExpressCheckOut();
+        void setExpressCheckOut(Boolean expressCheckOut);
     }
 }

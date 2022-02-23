@@ -40,7 +40,18 @@ namespace cashDeskService.Cashbox
 
         public void DisableExpress()
         {
-            Console.WriteLine("DisableExpress");
+            if (sessionService.getExpressCheckOut())
+            {
+                sessionService.setExpressCheckOut(false);
+                displayService.changeExpressCheckOut(false);
+                Console.WriteLine("Disable Express");
+            }
+            else
+            {
+                sessionService.setExpressCheckOut(true);
+                displayService.changeExpressCheckOut(true);
+                Console.WriteLine("Enable Express");
+            }
         }
 
         public void FinishPurchase()
@@ -64,14 +75,21 @@ namespace cashDeskService.Cashbox
 
         public void PayWithCard()
         {
-            try
+            if(!sessionService.getExpressCheckOut()) 
             {
-                cardReaderService.pay(Convert.ToInt64(sessionService.getTotalPrice() * 100));
-                clearPurchase();
+                try
+                {
+                    cardReaderService.pay(Convert.ToInt64(sessionService.getTotalPrice() * 100));
+                    clearPurchase();
+                }
+                catch (Exception ex)
+                {
+                    cardReaderService.abort(ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                cardReaderService.abort(ex.Message);
+                displayService.showIsExpressLock();
             }
         }
 

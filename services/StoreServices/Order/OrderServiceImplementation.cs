@@ -31,5 +31,13 @@ namespace services.StoreServices
                 db.SaveChanges();
             }
         }
+
+        public List<ProductOrder> getAllProductOrders()
+        {
+            using (var db = new TradingsystemDbContext())
+            {
+                return db.ProductOrders != null ? db.ProductOrders.ToList() : new List<ProductOrder>();
+            }
+        }
     }
 }

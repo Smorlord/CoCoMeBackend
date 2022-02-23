@@ -86,10 +86,41 @@ namespace GRPC_Service.Services
                         if (productSale != null)
                         {
                             product.SalePrice = productSale.SalePrice;
-                        } else
+                        } 
+                        else
                         {
                             product.SalePrice = -1;
                         }
+
+
+                        /** 
+                         * Aus den Stockitems des Stores muss das Stockitem gefunden werden und die Anzahl um eins reduziert werden 
+                         */
+                        storeService.getStore(db, PurchaseResponse.Store.Id).StockItems.ForEach( item =>
+                        {
+                            if (item.Product.Id == purchaseItem.Product.Id && item.Amount > item.MinStock)
+                            {
+                                item.Amount--; // reduziert Anzahl der Produkte um eins, wenn es gekauft wurde
+                            }
+                        });
+                        db.SaveChanges();
+
+
+                        /** 
+                         * UC 8 Product Exchange (on low stock) Among Stores 
+                         * Prüfe Stockamount
+                         */
+                        Store store = storeService.getStore(db, PurchaseResponse.Store.Id);
+                        store.StockItems.ForEach(async stockItem => 
+                        {
+                            if (stockItem.Amount <= stockItem.MinStock && !stockItem.IsExpected)
+                            {
+                                Console.WriteLine($"UC 8 - Start - Das Produkt {stockItem.Product.Name} mit der Anzahl {stockItem.Amount} ist zu gering");
+                                // should run async without waiting for something with .ConfigureAwait(false)
+                                await ProductExchange(db, store.Id, store.Location, stockItem).ConfigureAwait(false);
+                            }
+                        });
+
 
                         productSalesEnterprise.Add(product);
                     }
@@ -105,6 +136,82 @@ namespace GRPC_Service.Services
                 this._logger.LogError(ex.ToString());
                 throw new RpcException(Status.DefaultCancelled);
             }
+        }
+
+        /**
+         * Eigentlich sollte ein StoreServer der weiß, dass einer seiner Stores ein Produkt benötigt, eigenständig den EnterpriseServer 
+         * anstoßen, mit dem gewünschten Produkt und der EnterpriseServer sendet eine Anfrage an die StoreServer die in der Nähe des 
+         * Store liegen. Die StoreServer durchsuchen die eigenen Produkte falls genug vorrätig, wird das Produkt als reserviert markiert 
+         * und an den EnterpriseServer kommuniziert. Der EnterpriseServer verarbeitet das dahingehen, dass die beste Option genommen wird 
+         * und die Lieferung veranlasst wird. Der Status wird angepasst sobald der Tranfer durchgeführt ist.
+         * Der Anwendungsfall wird Server intern geregelt, es sind keine "Menschen" beteiligt.
+         */
+        public async Task ProductExchange(TradingsystemDbContext db, int storeId, int storeLocation, StockItem emtyStockItem)
+        {
+            /** Liste mit Store die genügend amount eines Produktes haben -> sortieren nach meiste zu erste
+             * dann einfach erste Store (meiste anzahl an items) nehmen und eine Anfrage  (weiterer Verlauf überlegen)
+             */
+            List<ExchangeEntry> exchangeEntrys = new List<ExchangeEntry>();
+
+            storeService.getStores(db).ForEach( exStore => { // get all Stores
+
+                if (exStore.Location == storeLocation) // PLZ-Gebiete 0-9 wenn im Selben liefergebiet
+                {
+                    exStore.StockItems.ForEach( (stockItem) => { // get all StockItems from this store
+
+                        // prüfe Stockitem ist gleiche wie gesuchtes StockItem und ob 
+                        if ((emtyStockItem.Product.Id == stockItem.Product.Id) && stockItem.Amount > stockItem.MinStock + 1)  
+                        {
+                            // Objekt mit Storeid, Produkt und verfügbare Anzahl der Produkte die angegeben werden können
+                            ExchangeEntry exchangeEntry = new ExchangeEntry();
+
+                            if ((stockItem.Amount - stockItem.MinStock) >= 25)
+                            {
+                                exchangeEntry.ExchangeAmount = (stockItem.Amount - stockItem.MinStock);
+                                exchangeEntry.StoreId = exStore.Id;
+                                exchangeEntry.Product = stockItem.Product;
+                                exchangeEntrys.Add(exchangeEntry);
+
+                                stockItem.IsReserved = "incoming";
+                            }
+                            
+                        }
+                        else
+                        {
+                            stockItem.IsReserved = "unavailable";
+                        }
+                    });
+                }
+            });
+            db.SaveChanges(); // safes IsReserved in StockItem
+
+            /** 
+             * Hier würden Heuristiken zum Einsatz kommen. Wir nehmen eine sortierte Liste von Anzahl 
+             * hoch -> niedirg und davon das erste Element (höchste Anzahl an Produkten über dem MinStock)
+             */
+            //exchangeEntrys = exchangeEntrys.OrderBy(p => p.ExchangeAmount).ToList(); // ascending order 
+            exchangeEntrys.Sort( (y, x) => x.ExchangeAmount.CompareTo(y.ExchangeAmount) );
+            ExchangeEntry entry = exchangeEntrys[0]; // mit der höchsten Anzahl an lieferbaren Produkten
+
+            entry.ExchangeAmount = entry.ExchangeAmount / 2;
+
+
+            /**
+             * Hier würde der Lieferauftrag erstellt werden mit dem entry.ExchangeAmount
+             * Bei Abschluss muss der Store der das Produkt zum Store liefert, dass das Produkt benötgt
+             * sein eigenes Inventar updaten
+             */
+
+
+            // Store mit dem benötigeten Produkt bekommt einen Status zugesendet (hier wird er einfach gesetzt)...
+            Store store = storeService.getStore(db, storeId);
+            store.ProductIsInDelivery = true;
+            store.ExchangeEntry.Add(entry); // enthält StoreId von dem die Lieferung stammt, das Produkt und die Anzahl der Einheiten
+            store.StockItems.Find(x => x.Product.Id == entry.Product.Id).IsExpected = true;
+            db.SaveChanges();
+
+
+
         }
     }
 }
