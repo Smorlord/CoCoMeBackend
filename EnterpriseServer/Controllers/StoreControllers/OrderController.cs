@@ -44,7 +44,7 @@ namespace EnterpriseServer.Controllers
         }
 
         /* UC 4 - receive ordered products - response: ProductOrder */
-        [HttpPut]
+        [HttpPost]
         [Route("/order/updatestock")]
         public void UpdateStockItems(int storeId, int productOrderId)
         {

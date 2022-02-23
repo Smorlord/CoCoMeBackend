@@ -18,7 +18,7 @@ namespace EnterpriseServer
         {
             services.AddControllers().AddJsonOptions(options =>
                 {
-                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 }
             );
             services.AddSingleton<IProductService, ProductServiceImplementation>();
@@ -30,6 +30,7 @@ namespace EnterpriseServer
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostApplicationLifetime lifetime)
         {
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
             app.UseHttpsRedirection();
 
             app.UseRouting();
