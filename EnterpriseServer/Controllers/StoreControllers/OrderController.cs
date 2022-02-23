@@ -48,11 +48,11 @@ namespace EnterpriseServer.Controllers
         [Route("/order/updatestock")]
         public void UpdateStockItems(int storeId, int productOrderId)
         {
-            ProductOrder productOrder = orderService.getProductOrder(productOrderId);
+            ProductOrder productOrder = orderService.getProductOrder(productOrderId, null);
 
             storeService.updateStockItemsInStore(null, storeId, productOrder.OrderEntries);
 
-            orderService.removeProductOrder(productOrderId);
+            orderService.setDeliveryDateToday(productOrderId);
         }
     }
 }

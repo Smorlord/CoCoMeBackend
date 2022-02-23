@@ -15,9 +15,9 @@ namespace services.StoreServices
             }
         }
 
-        public ProductOrder getProductOrder(int productOrderId)
+        public ProductOrder getProductOrder(int productOrderId, TradingsystemDbContext? context)
         {
-            using (var db = new TradingsystemDbContext())
+            using (var db = TradingsystemDbContext.GetContext(context))
             {
                 return db.ProductOrders.Include(p => p.OrderEntries).First(p => p.Id == productOrderId);
             }
@@ -27,7 +27,7 @@ namespace services.StoreServices
         {
             using (var db = new TradingsystemDbContext())
             {
-                db.Remove(getProductOrder(productOrderId));
+                db.Remove(getProductOrder(productOrderId, db));
                 db.SaveChanges();
             }
         }
@@ -38,6 +38,22 @@ namespace services.StoreServices
             {
                 return db.ProductOrders != null ? db.ProductOrders.ToList() : new List<ProductOrder>();
             }
+        }
+
+        public List<ProductOrder> getAllProductOrdersByStoreId(int storeId)
+        {
+            using (var db = new TradingsystemDbContext())
+            {
+                return db.ProductOrders != null ? db.ProductOrders.Where(p => p.StoreId == storeId).Include(p => p.OrderEntries).ToList() : new List<ProductOrder>();
+            }
+        }
+
+        public void setDeliveryDateToday(int productOrderId)
+        {
+            using var db = new TradingsystemDbContext();
+            var order = getProductOrder(productOrderId, db);
+            order.DeliveryDate = DateTime.Today;
+            db.SaveChanges();
         }
     }
 }

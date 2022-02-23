@@ -1,12 +1,10 @@
-﻿
-using data;
+﻿using data;
 using data.EnterpriseData;
 
 namespace services.EnterpriseServices
 {
     public class ProductServiceImplementation : IProductService
     {
-
         public ProductServiceImplementation()
         {
             using (var context = new TradingsystemDbContext())
@@ -35,10 +33,23 @@ namespace services.EnterpriseServices
                     addProduct(context, cookie);
                     addProduct(context, chocolate);
                     addProduct(context, chips);
-                    context.SaveChanges();
 
+                    addProductSupplier(context, new ProductSupplier { Name = "Supplier 1" }, new Product[]{
+                        cookie, chocolate,
+                    });
+                    addProductSupplier(context, new ProductSupplier { Name = "Supplier 2" }, new Product[]{chips});
+                    context.SaveChanges();
                 }
             }
+        }
+
+        private void addProductSupplier(TradingsystemDbContext context, ProductSupplier supplier,
+            Product[] products)
+        {
+            using var db = TradingsystemDbContext.GetContext(context);
+            var createdSupplier = db.Add(supplier);
+            createdSupplier.Entity.Products = new List<Product>(products);
+            db.SaveChanges();
         }
 
         public void addProduct(TradingsystemDbContext context, Product Product)
@@ -57,7 +68,6 @@ namespace services.EnterpriseServices
                 db.Remove(getProduct(db, ProductID));
                 db.SaveChanges();
             }
-            
         }
 
         public Product getProduct(TradingsystemDbContext context, int ProductId)
@@ -66,7 +76,6 @@ namespace services.EnterpriseServices
             {
                 return db.Products.FirstOrDefault(p => p.Id == ProductId);
             }
-            
         }
 
         public List<Product> getProducts(TradingsystemDbContext context)
@@ -75,7 +84,6 @@ namespace services.EnterpriseServices
             {
                 return db.Products != null ? db.Products.ToList() : new List<Product>();
             }
-            
         }
 
         public Product getProductByBarcode(TradingsystemDbContext context, int Barcode)

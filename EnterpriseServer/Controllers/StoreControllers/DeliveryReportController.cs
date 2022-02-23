@@ -26,12 +26,11 @@ namespace EnterpriseServer.Controllers
 
         [HttpPost]
         [Route("/delivery-report")]
-        public DeliveryReports GetDeliveryReport(TradingsystemDbContext context)
+        public DeliveryReports GetDeliveryReport(int storeId)
         {
-            using (var db = TradingsystemDbContext.GetContext(context))
+            using (var db = new TradingsystemDbContext())
             {
-                
-                DeliveryReports deliveryReports = new DeliveryReports();
+                DeliveryReports deliveryReports = new DeliveryReports{DeliveryReport = new List<DeliveryReport>()};
 
                 /* 
                  * Für jeden Supplier wird die Produktpalette durchlaufen, als auch die 
@@ -41,36 +40,42 @@ namespace EnterpriseServer.Controllers
                  * Am Ende kann die Durchschnittslieferung für einen Suppliert berechnet und in den 
                  * DeliveryReport hinzugefügt werden
                 */
-                db.ProductSuppliers.ToList().ForEach( supplier =>
+                db.ProductSuppliers.ToList().ForEach(supplier =>
                 {
                     DeliveryReport deliveryReport = new DeliveryReport();
                     deliveryReport.creationDate = DateTime.Now;
                     deliveryReport.supplierName = supplier.Name;
                     double totalDays = 0;
                     int count = 0;
-                    
+
                     // Alle ProduktOders von OrderService um die OrderEntries durchlaufen zu können
-                    orderService.getAllProductOrders().ToList().ForEach( productOrder =>
+                    orderService.getAllProductOrdersByStoreId(storeId).ToList().ForEach(productOrder =>
                     {
-                        // for each order in orderentries(orderservice)
-                        productOrder.OrderEntries.ToList().ForEach( order =>
                         {
-                            // for each product in products (supplier)
-                            supplier.Products.ToList().ForEach( product =>
+                            // for each order in orderentries(orderservice)
+                            if (productOrder.DeliveryDate is not null)
                             {
-                                // if orderEntry(order).productId == product.id
-                                if (product.Id == order.ProductId)
+                                productOrder.OrderEntries.ToList().ForEach(order =>
                                 {
-                                    totalDays += (productOrder.DeliveryDate - productOrder.OrderingDate).TotalDays;
-                                    count ++;
-                                }
-                            });
-                        });
+                                    // for each product in products (supplier)
+                                    supplier.Products.ToList().ForEach(product =>
+                                    {
+                                        // if orderEntry(order).productId == product.id
+                                        if (product.Id == order.ProductId)
+                                        {
+                                            var diff = productOrder.DeliveryDate - productOrder.OrderingDate;
+                                            totalDays += (diff ??= TimeSpan.Zero).TotalDays;
+                                            count++;
+                                        }
+                                    });
+                                });
+                            }
+                        }
+                        ;
                     });
 
                     deliveryReport.meanTime = totalDays / count;
                     deliveryReports.DeliveryReport.Add(deliveryReport);
-
                 });
 
                 // kann wenn gewünscht auch in DB gespeichert werden
@@ -78,9 +83,6 @@ namespace EnterpriseServer.Controllers
                 // db.SaveChanges();
 
                 return deliveryReports;
-                
-                
-                
             }
         }
     }
