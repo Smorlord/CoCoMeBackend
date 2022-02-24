@@ -23,7 +23,8 @@ namespace EnterpriseServer.Controllers
         [Route("/stock")]
         public List<StockItem> GetStockItems(int storeId)
         {
-            return storeService.getStockItemByStore(null, storeId);
+            List<StockItem> items = storeService.getStockItemByStore(null, storeId);
+            return items;
         }
     }
 }

@@ -21,8 +21,9 @@ namespace EnterpriseServer.Controllers.StoreControllers
         [Route("/saleprice")]
         public ActionResult<StockItem> updateStockItemSalePrice(int storeId, UpdateStockItemPrice value)
         {
-            var item = storeService.updateStockItemSalePrice(null, storeId, value.Id, value.SalesPrice);
-            if (item !=null)
+            storeService.updateProductSale(null, storeId, value.Id, value.SalesPrice);
+            StockItem item = storeService.getStockItemByStoreByProduct(null, storeId, value.Id);
+            if (item is not null)
             {
                 return Ok(item);
             }

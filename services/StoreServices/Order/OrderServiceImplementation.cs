@@ -52,7 +52,7 @@ namespace services.StoreServices
         {
             using var db = new TradingsystemDbContext();
             var order = getProductOrder(productOrderId, db);
-            order.DeliveryDate = DateTime.Today;
+            order.DeliveryDate = DateTime.Now;
             db.SaveChanges();
         }
     }

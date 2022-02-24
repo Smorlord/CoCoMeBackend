@@ -5,7 +5,6 @@ namespace data.StoreData
     {
 
         public int Id { get; set; }
-        public double? SalesPrice { get; set; }
         public int Amount { get; set; }
 
         public int MinStock { get; set; }

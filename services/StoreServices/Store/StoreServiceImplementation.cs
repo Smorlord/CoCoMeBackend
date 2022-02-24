@@ -146,11 +146,7 @@ namespace services.StoreServices
             {
                 if (getProductSales(context, 1).Count == 0)
                 {
-                    ProductSale productSale = new ProductSale();
-                    productSale.Product = productService.getProductByBarcode(context, 1111);
-                    productSale.SalePrice = 0.99;
-                    //productSale.Store = getStore(context, 1);
-                    addProductSales(context, 1, productSale);
+                    updateProductSale(context, 1, productService.getProductByBarcode(context, 1111).Id, 0.99);
                     context.SaveChanges();
                 }
             }
@@ -171,8 +167,9 @@ namespace services.StoreServices
             {
                 return db.Stores
                     .Include(s => s.ProductSales).ThenInclude(p => p.Product)
-                    .Include(s => s.StockItems).ThenInclude(s => s.Product)
-                    .Include(s => s.Sales)
+                    .Include(s => s.StockItems).ThenInclude(s => s.Product).ThenInclude(p => p.ProductSale)
+                    .Include(s => s.Sales).ThenInclude(p => p.PurchaseItems)
+                    .Include(s => s.ExchangeEntry)
                     .FirstOrDefault(p => p.Id == StoreId);
             }
         }
@@ -216,24 +213,26 @@ namespace services.StoreServices
             return store.ProductSales.ToList();
         }
 
-        public void addProductSales(TradingsystemDbContext context, int StoreId, ProductSale ProductSale)
+        public void updateProductSale(TradingsystemDbContext context, int StoreId, int ProductId, double SalesPrice)
         {
             using (var db = TradingsystemDbContext.GetContext(context))
             {
                 Store store = getStore(db, StoreId);
-                store.ProductSales.Add(ProductSale);
-                //var productSaleEntity = db.ProductSales.Add(ProductSale);
-                //var store = db.Stores.First(p => p.Id == StoreId);
-                //store.ProductSales.Add(productSaleEntity.Entity);
-                //db.Entry(store).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                //db.Update(store);
+                ProductSale? existingProductSale = getProductSaleByProductId(db, StoreId, ProductId);
+                if (existingProductSale is not null)
+                {
+                    existingProductSale.SalePrice = SalesPrice;
+                }
+                else
+                {
+                    ProductSale productSale = new ProductSale { SalePrice = SalesPrice };
+                    store.ProductSales.Add(productSale);
+                    Product product = productService.getProduct(db, ProductId);
+                    product.ProductSale = productSale;
+                }
+
                 db.SaveChanges();
             }
-        }
-
-        public void updateProductSale(TradingsystemDbContext context, int StoreId, ProductSale ProductSale)
-        {
-            throw new NotImplementedException();
         }
 
         public void removeProductSale(TradingsystemDbContext context, int StoreId, int ProductSaleId)
@@ -258,6 +257,12 @@ namespace services.StoreServices
             return store.StockItems.ToList();
         }
 
+        public StockItem? getStockItemByStoreByProduct(TradingsystemDbContext context, int StoreId, int ProductId)
+        {
+            Store store = getStore(context, StoreId);
+            return store.StockItems.Find(i => i.Product.Id == ProductId);
+        }
+
         public void addStockItemByStore(TradingsystemDbContext context, int StoreId, StockItem StockItem)
         {
             using (var db = TradingsystemDbContext.GetContext(context))
@@ -265,24 +270,6 @@ namespace services.StoreServices
                 Store store = getStore(db, StoreId);
                 store.StockItems.Add(StockItem);
                 db.SaveChanges();
-            }
-        }
-
-        public StockItem? updateStockItemSalePrice(TradingsystemDbContext context, int storeId, int itemId,
-            double salePrice)
-        {
-            using var db = TradingsystemDbContext.GetContext(context);
-            Store store = getStore(db, storeId);
-            var item = store.StockItems.Find(i => i.Id == itemId);
-            if (item != null)
-            {
-                item.SalesPrice = salePrice;
-                db.SaveChanges();
-                return item;
-            }
-            else
-            {
-                return null;
             }
         }
     }

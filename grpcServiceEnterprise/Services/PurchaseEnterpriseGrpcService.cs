@@ -165,7 +165,7 @@ namespace GRPC_Service.Services
                             // Objekt mit Storeid, Produkt und verfügbare Anzahl der Produkte die angegeben werden können
                             ExchangeEntry exchangeEntry = new ExchangeEntry();
 
-                            if ((stockItem.Amount - stockItem.MinStock) >= 25)
+                            if ((stockItem.Amount - stockItem.MinStock) >= 25) //emptyStock.MinStock - emptyStock.Amount
                             {
                                 exchangeEntry.ExchangeAmount = (stockItem.Amount - stockItem.MinStock);
                                 exchangeEntry.StoreId = exStore.Id;

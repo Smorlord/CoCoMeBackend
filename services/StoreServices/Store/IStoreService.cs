@@ -17,17 +17,14 @@ namespace services.StoreServices
 
         ProductSale getProductSaleByProductId(TradingsystemDbContext context, int StoreId, int ProductId);
         List<ProductSale> getProductSales(TradingsystemDbContext context, int StoreId);
-        void addProductSales(TradingsystemDbContext context, int StoreId, ProductSale ProductSale);
-        void updateProductSale(TradingsystemDbContext context, int StoreId, ProductSale ProductSale);
+        void updateProductSale(TradingsystemDbContext context, int StoreId, int ProductId, double SalesPrice);
         void removeProductSale(TradingsystemDbContext context, int StoreId, int ProductSaleId);
 
         ProductSale getProductSaleById(TradingsystemDbContext context, int ProductSaleId);
 
         List<StockItem> getStockItemByStore(TradingsystemDbContext context, int StoreId);
+        StockItem? getStockItemByStoreByProduct(TradingsystemDbContext context, int StoreId, int ProductId);
         void updateStockItemsInStore(TradingsystemDbContext context, int storeId, List<OrderEntry> entries);
         void addStockItemByStore(TradingsystemDbContext context, int StoreId, StockItem StockItem);
-
-
-        StockItem? updateStockItemSalePrice(TradingsystemDbContext context, int storeId, int itemId, double salePrice);
     }
 }

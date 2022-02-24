@@ -29,6 +29,7 @@ namespace data
 
             //Database.EnsureDeleted();
             Database.EnsureCreated();
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
