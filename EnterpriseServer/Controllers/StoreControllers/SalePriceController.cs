@@ -17,11 +17,18 @@ namespace EnterpriseServer.Controllers.StoreControllers
             this.storeService = storeService;
         }
 
-        [HttpPatch]
+        [HttpPut]
         [Route("/saleprice")]
-        public void createProductSale()
+        public ActionResult<StockItem> updateStockItemSalePrice(int storeId, UpdateStockItemPrice value)
         {
-           
+            storeService.updateProductSale(null, storeId, value.Id, value.SalesPrice);
+            StockItem item = storeService.getStockItemByStoreByProduct(null, storeId, value.Id);
+            if (item is not null)
+            {
+                return Ok(item);
+            }
+
+            return NotFound();
         }
 
 

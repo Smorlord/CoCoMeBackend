@@ -1,7 +1,5 @@
-﻿using data;
-using data.StoreData;
+﻿using data.StoreData;
 using Microsoft.AspNetCore.Mvc;
-using services.EnterpriseServices;
 using services.StoreServices;
 
 namespace EnterpriseServer.Controllers
@@ -27,61 +25,34 @@ namespace EnterpriseServer.Controllers
         /* UC 3 - order product - response: ProductOrder */
         [HttpPost]
         [Route("/order/create")]
-        public ProductOrder CreateProductOrder(TradingsystemDbContext context, int storeId, int productId)
+        public ProductOrder CreateProductOrder(int storeId, List<OrderEntryRequest> entries)
         {
-            using (var db = TradingsystemDbContext.GetContext(context))
-            {
-                OrderEntry orderEntry = new OrderEntry();
-                orderEntry.Id = productId;
-
-                Store store = storeService.getStore(context, storeId);
-                foreach (StockItem item in store.StockItems)
+            List<OrderEntry> orderEntries = entries.ConvertAll(e => new OrderEntry
                 {
-                    if (item.Id == productId)
-                    {
-                        orderEntry.Amount = item.MaxStock - item.Amount; // Automatically orders the amount of products to fill up the maxStock 
-                    }
+                    ProductId = e.ProductId,
+                    Amount = e.Amount
                 }
+            );
+            ProductOrder productOrder = new ProductOrder();
+            productOrder.OrderingDate = DateTime.Now;
+            productOrder.OrderEntries = orderEntries;
+            productOrder.StoreId = storeId;
 
-                ProductOrder productOrder = new ProductOrder();
-                productOrder.DeliveryDate = DateTime.Now.AddDays(12);
-                productOrder.OrderingDate = DateTime.Now;
-                productOrder.OrderEntries.Add(orderEntry);
-                productOrder.StoreId = storeId;
+            orderService.addProductOrder(productOrder);
 
-                orderService.addProductOrder(productOrder);
-
-                return productOrder;
-            }
+            return productOrder;
         }
 
         /* UC 4 - receive ordered products - response: ProductOrder */
-        [HttpPut]
+        [HttpPost]
         [Route("/order/updatestock")]
-        public void UpdateStockItems(TradingsystemDbContext context, int storeId, int productOrderId)
+        public void UpdateStockItems(int storeId, int productOrderId)
         {
-            using (var db = TradingsystemDbContext.GetContext(context))
-            {
-                // get Productorder by id
-                ProductOrder productOrder = orderService.getProductOrder(productOrderId);
+            ProductOrder productOrder = orderService.getProductOrder(productOrderId, null);
 
-                // get store by id and update amount
-                Store store = storeService.getStore(context,storeId);
-                foreach (StockItem item in store.StockItems)
-                {
-                    if (productOrder.StoreId == storeId)
-                    {
-                        // The ordered quantities are always up to the maxStock and
-                        item.Amount = item.MaxStock; // are automatically replenished accordingly. The StoreManager
-                                                     // must manually check the delivery for completeness.
-                    }
-                }
+            storeService.updateStockItemsInStore(null, storeId, productOrder.OrderEntries);
 
-                // delete ProductOrderById
-                orderService.removeProductOrder(productOrderId);
-            }
+            orderService.setDeliveryDateToday(productOrderId);
         }
-
-
     }
 }

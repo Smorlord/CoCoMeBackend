@@ -92,38 +92,37 @@ namespace GRPC_Service.Services
                             product.SalePrice = -1;
                         }
 
-
                         /** 
                          * Aus den Stockitems des Stores muss das Stockitem gefunden werden und die Anzahl um eins reduziert werden 
                          */
                         storeService.getStore(db, PurchaseResponse.Store.Id).StockItems.ForEach( item =>
                         {
-                            if (item.Product.Id == purchaseItem.Product.Id && item.Amount > item.MinStock)
+                            if (item.Product.Id == purchaseItem.Product.Id)
                             {
                                 item.Amount--; // reduziert Anzahl der Produkte um eins, wenn es gekauft wurde
                             }
                         });
                         db.SaveChanges();
 
-
-                        /** 
-                         * UC 8 Product Exchange (on low stock) Among Stores 
-                         * Prüfe Stockamount
-                         */
-                        Store store = storeService.getStore(db, PurchaseResponse.Store.Id);
-                        store.StockItems.ForEach(async stockItem => 
-                        {
-                            if (stockItem.Amount <= stockItem.MinStock && !stockItem.IsExpected)
-                            {
-                                Console.WriteLine($"UC 8 - Start - Das Produkt {stockItem.Product.Name} mit der Anzahl {stockItem.Amount} ist zu gering");
-                                // should run async without waiting for something with .ConfigureAwait(false)
-                                await ProductExchange(db, store.Id, store.Location, stockItem).ConfigureAwait(false);
-                            }
-                        });
-
-
                         productSalesEnterprise.Add(product);
                     }
+
+                    /** 
+                    * UC 8 Product Exchange (on low stock) Among Stores 
+                    * Prüfe Stockamount
+                    */
+                    Store store = storeService.getStore(db, PurchaseResponse.Store.Id);
+                    store.StockItems.ForEach(async stockItem =>
+                    {
+                        if (stockItem.Amount <= stockItem.MinStock)
+                        {
+                            Console.WriteLine($"UC 8 - Start - Das Produkt <{stockItem.Product.Name}> mit der Anzahl <{stockItem.Amount}> ist zu gering");
+                            // should run async without waiting for something with .ConfigureAwait(false)
+                            await ProductExchange(db, store.Id, store.Location, stockItem).ConfigureAwait(false);
+                        }
+                    });
+
+
                     output.ProductEnterpriseDTOModel.AddRange(productSalesEnterprise);
                 }
                 
@@ -182,30 +181,28 @@ namespace GRPC_Service.Services
             exchangeEntrys.Sort( (y, x) => x.ExchangeAmount.CompareTo(y.ExchangeAmount) ); // ascending order 
             ExchangeEntry entry = exchangeEntrys[0]; // mit der höchsten Anzahl an lieferbaren Produkten
 
-            // Zulieferer "unavailable";
-            StockItem supplier = storeService.getStore(db, entry.StoreId).StockItems.Find(stockitem => stockitem.Product.Id == entry.Product.Id);
-            supplier.ExchangeStatus = ExchangeStatus.Unavailable;
-            // Empfänger "incoming";
-            StockItem receiver = storeService.getStore(db, storeId).StockItems.Find(stockitem => stockitem.Product.Id == emptyStockItem.Product.Id);
-            receiver.ExchangeStatus = ExchangeStatus.Incoming;
+            
+            StockItem supplierItem = storeService.getStore(db, entry.StoreId).StockItems.Find(stockitem => stockitem.Product.Id == entry.Product.Id);
+            supplierItem.ExchangeStatus = ExchangeStatus.Unavailable; // Zulieferer "unavailable";
 
-            entry.ExchangeAmount = entry.ExchangeAmount / 2; // TODO speichere den wert von emtyStockItem.Amount - emtyStockItem.MinStock
+            StockItem receiverItem = storeService.getStore(db, storeId).StockItems.Find(stockitem => stockitem.Product.Id == emptyStockItem.Product.Id);
+            receiverItem.ExchangeStatus = ExchangeStatus.Incoming; // Empfänger "incoming";
 
+
+            supplierItem.Amount -= receiverItem.MinStock - receiverItem.Amount;
+            entry.ExchangeAmount = receiverItem.MinStock - receiverItem.Amount;
 
             /**
              * Hier würde der Lieferauftrag erstellt werden mit dem entry.ExchangeAmount
              * Bei Abschluss muss der Store der das Produkt zum Store liefert, dass das Produkt benötgt
              * sein eigenes Inventar updaten
              */
+            Console.WriteLine($"Supplier mit der StoreId: <{entry.StoreId}> liefert eine Anzahl von <{entry.ExchangeAmount}> an den Store mit der id <{storeId}>");
 
 
-            // Store mit dem benötigeten Produkt bekommt einen Status zugesendet (hier wird er einfach gesetzt)...
             Store store = storeService.getStore(db, storeId);
             store.ExchangeEntry.Add(entry); // enthält StoreId von dem die Lieferung stammt, das Produkt und die Anzahl der Einheiten
             db.SaveChanges();
-
-
-
         }
     }
 }
