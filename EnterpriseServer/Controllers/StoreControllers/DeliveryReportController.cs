@@ -28,18 +28,19 @@ namespace EnterpriseServer.Controllers
         [Route("/delivery-report")]
         public DeliveryReports GetDeliveryReport(int storeId)
         {
-            using (var db = new TradingsystemDbContext())
+            return deliveryReportService.createDeliveryReport(null, storeId);
+            /*using (var db = new TradingsystemDbContext())
             {
                 DeliveryReports deliveryReports = new DeliveryReports{DeliveryReport = new List<DeliveryReport>()};
 
-                /* 
+                
                  * Für jeden Supplier wird die Produktpalette durchlaufen, als auch die 
                  * die OrderEntries in einer ProductOrder.
                  * Anhand der ProduktId werden überprüft, ob es das Produkt in einer Bestellung gibt
                  * ist dem so, kann die Dauer der Zulieferung in Tagen berechnet und dem suppliert zugeordnet werden. 
                  * Am Ende kann die Durchschnittslieferung für einen Suppliert berechnet und in den 
                  * DeliveryReport hinzugefügt werden
-                */
+                
                 db.ProductSuppliers.ToList().ForEach( supplier =>
                 {
                     DeliveryReport deliveryReport = new DeliveryReport();
@@ -83,7 +84,7 @@ namespace EnterpriseServer.Controllers
                 // db.SaveChanges();
 
                 return deliveryReports;
-            }
+            }*/
         }
     }
 }

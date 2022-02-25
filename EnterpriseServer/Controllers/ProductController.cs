@@ -24,10 +24,6 @@ namespace EnterpriseServer.Controllers
         [Route("/products")]
         public List<Product> GetAllProducts()
         {
-            /* using (var context = new TradingsystemDbContext())
-            {
-                List<Product> products = productService.getProducts(null);
-            }*/
             return productService.getProducts(null);
         }
 

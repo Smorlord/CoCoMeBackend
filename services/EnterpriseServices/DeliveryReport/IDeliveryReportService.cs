@@ -8,5 +8,7 @@ namespace services.EnterpriseServices
         void addDeliveryReport(TradingsystemDbContext context, DeliveryReports deliveryReports);
         List<DeliveryReports> getAllDeliveryReports(TradingsystemDbContext context);
         DeliveryReports getDeliveryReportById(TradingsystemDbContext context, int DeliveryId);
+
+        DeliveryReports createDeliveryReport(TradingsystemDbContext context, int storeId);
     }
 }

@@ -5,8 +5,13 @@ namespace services.EnterpriseServices
 {
     public class ProductServiceImplementation : IProductService
     {
-        public ProductServiceImplementation()
+
+        private IProductSupplierService productSupplierService;
+        
+        public ProductServiceImplementation(IProductSupplierService productSupplierService)
         {
+            this.productSupplierService = productSupplierService;
+
             using (var context = new TradingsystemDbContext())
             {
                 if (getProducts(context).Count == 0)
@@ -31,23 +36,23 @@ namespace services.EnterpriseServices
                     addProduct(context, chocolate);
                     addProduct(context, chips);
 
-                    addProductSupplier(context, new ProductSupplier { Name = "Supplier 1" }, new Product[]{
+                    productSupplierService.addProductSupplier(context, new ProductSupplier { Name = "Supplier 1" }, new Product[]{
                         cookie, chocolate,
                     });
-                    addProductSupplier(context, new ProductSupplier { Name = "Supplier 2" }, new Product[]{chips});
+                    productSupplierService.addProductSupplier(context, new ProductSupplier { Name = "Supplier 2" }, new Product[]{chips});
                     context.SaveChanges();
                 }
             }
         }
 
-        private void addProductSupplier(TradingsystemDbContext context, ProductSupplier supplier,
+        /*private void addProductSupplier(TradingsystemDbContext context, ProductSupplier supplier,
             Product[] products)
         {
             using var db = TradingsystemDbContext.GetContext(context);
             var createdSupplier = db.Add(supplier);
             createdSupplier.Entity.Products = new List<Product>(products);
             db.SaveChanges();
-        }
+        }*/
 
         public void addProduct(TradingsystemDbContext context, Product Product)
         {
