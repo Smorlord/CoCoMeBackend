@@ -166,8 +166,8 @@ namespace services.StoreServices
             using (var db = TradingsystemDbContext.GetContext(context))
             {
                 return db.Stores
-                    .Include(s => s.ProductSales).ThenInclude(p => p.Product)
-                    .Include(s => s.StockItems).ThenInclude(s => s.Product).ThenInclude(p => p.ProductSale)
+                    .Include(s => s.ProductSales)
+                    .Include(s => s.StockItems).ThenInclude(s => s.Product)
                     .Include(s => s.Sales).ThenInclude(p => p.PurchaseItems)
                     .Include(s => s.ExchangeEntry)
                     .FirstOrDefault(p => p.Id == StoreId);
@@ -218,17 +218,19 @@ namespace services.StoreServices
             using (var db = TradingsystemDbContext.GetContext(context))
             {
                 Store store = getStore(db, StoreId);
-                ProductSale? existingProductSale = getProductSaleByProductId(db, StoreId, ProductId);
+                ProductSale? existingProductSale = store.ProductSales.Find(p => p.ProductId == ProductId);
                 if (existingProductSale is not null)
                 {
                     existingProductSale.SalePrice = SalesPrice;
                 }
                 else
                 {
-                    ProductSale productSale = new ProductSale { SalePrice = SalesPrice };
+                    ProductSale productSale = new ProductSale
+                    {
+                        SalePrice = SalesPrice, Product = productService.getProduct(db, ProductId),
+                        ProductId = ProductId
+                    };
                     store.ProductSales.Add(productSale);
-                    Product product = productService.getProduct(db, ProductId);
-                    product.ProductSale = productSale;
                 }
 
                 db.SaveChanges();
