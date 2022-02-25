@@ -116,7 +116,6 @@ namespace GRPC_Service.Services
                     {
                         if (stockItem.Amount <= stockItem.MinStock)
                         {
-                            Console.WriteLine($"UC 8 - Start - Das Produkt <{stockItem.Product.Name}> mit der Anzahl <{stockItem.Amount}> ist zu gering");
                             // should run async without waiting for something with .ConfigureAwait(false)
                             await ProductExchange(db, store.Id, store.Location, stockItem).ConfigureAwait(false);
                         }
@@ -165,7 +164,7 @@ namespace GRPC_Service.Services
                             ExchangeEntry exchangeEntry = new ExchangeEntry();
 
                             exchangeEntry.ExchangeAmount = (stockItem.Amount - stockItem.MinStock);
-                            exchangeEntry.StoreId = exStore.Id;
+                            exchangeEntry.SupplierStoreId = exStore.Id;
                             exchangeEntry.Product = stockItem.Product;
                             exchangeEntrys.Add(exchangeEntry);
                         }
@@ -182,7 +181,7 @@ namespace GRPC_Service.Services
             ExchangeEntry entry = exchangeEntrys[0]; // mit der höchsten Anzahl an lieferbaren Produkten
 
             
-            StockItem supplierItem = storeService.getStore(db, entry.StoreId).StockItems.Find(stockitem => stockitem.Product.Id == entry.Product.Id);
+            StockItem supplierItem = storeService.getStore(db, entry.SupplierStoreId).StockItems.Find(stockitem => stockitem.Product.Id == entry.Product.Id);
             supplierItem.ExchangeStatus = ExchangeStatus.Unavailable; // Zulieferer "unavailable";
 
             StockItem receiverItem = storeService.getStore(db, storeId).StockItems.Find(stockitem => stockitem.Product.Id == emptyStockItem.Product.Id);
@@ -197,7 +196,6 @@ namespace GRPC_Service.Services
              * Bei Abschluss muss der Store der das Produkt zum Store liefert, dass das Produkt benötgt
              * sein eigenes Inventar updaten
              */
-            Console.WriteLine($"Supplier mit der StoreId: <{entry.StoreId}> liefert eine Anzahl von <{entry.ExchangeAmount}> an den Store mit der id <{storeId}>");
 
 
             Store store = storeService.getStore(db, storeId);

@@ -272,11 +272,10 @@ namespace services.StoreServices
                             recieverItem.ExchangeStatus = null;
                             deleteEntry = exchangeEntry;
 
-                            getStore(db, exchangeEntry.StoreId).StockItems.ForEach(supplierItem =>
+                            getStore(db, exchangeEntry.SupplierStoreId).StockItems.ForEach(supplierItem =>
                             {
                                 if (supplierItem.Product.Id == exchangeEntry.Product.Id)
                                 {
-                                    supplierItem.Amount -= exchangeEntry.ExchangeAmount;
                                     supplierItem.ExchangeStatus = null;
                                 }
                             });
