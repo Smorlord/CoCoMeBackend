@@ -32,6 +32,6 @@ app.MapGet("/", () => "Communication with gRPC endpoints must be made through a 
 startup.Configure(app, app.Lifetime);
 
 app.Services.GetRequiredService<IPurchaseService>().init();
-app.Services.GetRequiredService<IStoreService>().init();
+app.Services.GetRequiredService<IStoreService>().init(); 
 
 app.Run();

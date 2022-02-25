@@ -70,6 +70,7 @@ namespace EnterpriseServer.Controllers
 
                     deliveryReport.meanTime = totalDays / count;
                     deliveryReports.DeliveryReport.Add(deliveryReport);
+                    db.SaveChanges();
 
                 });
 

@@ -6,6 +6,5 @@
         public int StoreId { get; set; }
         public int ExchangeAmount { get; set; }
         public virtual Product Product { get; set; }
-
     }
 }

@@ -14,19 +14,16 @@ namespace services.EnterpriseServices
                 if (getProducts(context).Count == 0)
                 {
                     Product cookie = new Product();
-                    cookie.Id = 1;
                     cookie.Name = "Keks";
                     cookie.Barcode = 1111;
                     cookie.SellingPrice = 1.99;
 
                     Product chocolate = new Product();
-                    chocolate.Id = 2;
                     chocolate.Name = "Schokolade";
                     chocolate.Barcode = 2222;
                     chocolate.SellingPrice = 2.49;
 
                     Product chips = new Product();
-                    chips.Id = 3;
                     chips.Name = "Chips";
                     chips.Barcode = 3333;
                     chips.SellingPrice = 3.19;
