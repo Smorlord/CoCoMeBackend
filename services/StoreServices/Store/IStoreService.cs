@@ -21,5 +21,6 @@ namespace services.StoreServices
         StockItem? getStockItemByStoreByProduct(TradingsystemDbContext context, int StoreId, int ProductId);
         void updateStockItemsInStore(TradingsystemDbContext context, int storeId, List<OrderEntry> entries);
         void addStockItemByStore(TradingsystemDbContext context, int StoreId, StockItem StockItem);
+        void changeExchangeStatusInStockItem(int storeId);
     }
 }

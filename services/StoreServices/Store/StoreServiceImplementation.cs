@@ -254,5 +254,42 @@ namespace services.StoreServices
                 db.SaveChanges();
             }
         }
+
+        public void changeExchangeStatusInStockItem (int storeId)
+        {
+            using (var db = new TradingsystemDbContext())
+            {
+                Store reciever = getStore(db, storeId);
+                ExchangeEntry deleteEntry = null;
+
+                reciever.StockItems.ForEach(recieverItem =>
+                {
+                    reciever.ExchangeEntry.ForEach(exchangeEntry =>
+                    {
+                        if (recieverItem.Product.Id == exchangeEntry.Product.Id)
+                        {
+                            recieverItem.Amount += exchangeEntry.ExchangeAmount;
+                            recieverItem.ExchangeStatus = null;
+                            deleteEntry = exchangeEntry;
+
+                            getStore(db, exchangeEntry.StoreId).StockItems.ForEach(supplierItem =>
+                            {
+                                if (supplierItem.Product.Id == exchangeEntry.Product.Id)
+                                {
+                                    supplierItem.Amount -= exchangeEntry.ExchangeAmount;
+                                    supplierItem.ExchangeStatus = null;
+                                }
+                            });
+                        }
+                    });
+                    if(deleteEntry != null) { 
+                        reciever.ExchangeEntry.Remove(deleteEntry);
+                    }
+
+                });
+
+                db.SaveChanges();
+            }
+        }
     }
 }
