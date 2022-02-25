@@ -1,10 +1,5 @@
 ﻿using data;
 using data.StoreData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace services.StoreServices
 {
@@ -26,5 +21,6 @@ namespace services.StoreServices
         StockItem? getStockItemByStoreByProduct(TradingsystemDbContext context, int StoreId, int ProductId);
         void updateStockItemsInStore(TradingsystemDbContext context, int storeId, List<OrderEntry> entries);
         void addStockItemByStore(TradingsystemDbContext context, int StoreId, StockItem StockItem);
+        void changeExchangeStatusInStockItem(int storeId);
     }
 }
