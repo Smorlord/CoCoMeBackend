@@ -31,13 +31,6 @@ message UpdatePurchaseStoreDTOModel {
 	double SalePriceTotal = 3;
 }
 
-
-/*message ProductSaleStoreDTOModel {
-	int32 Id = 1;
-	ProductStoreDTOModel ProductStoreDTOModel = 2;
-	double salePrice = 3;
-}*/
-
 message ProductStoreDTOLookUpModel {
 	int32 Id = 1;
 }

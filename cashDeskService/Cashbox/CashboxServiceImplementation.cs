@@ -56,55 +56,65 @@ namespace cashDeskService.Cashbox
 
         public void FinishPurchase()
         {
-
-            List<ProductStoreDTOLookUpModel> products = new List<ProductStoreDTOLookUpModel>();
-            foreach (var scannedProduct in sessionService.getScannedProducts())
-            {
-                ProductStoreDTOLookUpModel product = new ProductStoreDTOLookUpModel();
-                product.Id = scannedProduct.Id;
-                products.Add(product);
-            }
-            UpdatePurchaseStoreDTOLookUpModel data = new UpdatePurchaseStoreDTOLookUpModel();
-            data.PurchaseId = sessionService.getPurchaseId();
-            data.ProductStoreDTOLookUpModel.AddRange(products);
-            UpdatePurchaseStoreDTOModel responseUpdate = this.grpcClientConnector.getPurchaseStoreDTOClient().UpdatePurchaseStore(data);
-            displayService.showTotalInDisplay(responseUpdate.SalePriceTotal);
-            printerService.printItems(responseUpdate.ProductStoreDTOModel.ToList());
-            sessionService.setTotalPrice(responseUpdate.SalePriceTotal);
+            sessionService.setSaleFinish(true);
+            displayService.showTotalInDisplay(sessionService.getTotalPrice());
+            printerService.printItems(sessionService.getScannedProducts());
         }
 
         public void PayWithCard()
         {
-            if(!sessionService.getExpressCheckOut()) 
+            if (sessionService.getSaleFinish())
             {
-                try
+                if (!sessionService.getExpressCheckOut())
                 {
-                    cardReaderService.pay(Convert.ToInt64(sessionService.getTotalPrice() * 100));
-                    clearPurchase();
+                    try
+                    {
+                        cardReaderService.pay(Convert.ToInt64(sessionService.getTotalPrice() * 100));
+                        updateInventory();
+                        clearPurchase();
+                    }
+                    catch (Exception ex)
+                    {
+                        cardReaderService.abort(ex.Message);
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    cardReaderService.abort(ex.Message);
+                    displayService.showIsExpressLock();
                 }
-            }
-            else
+            } else
             {
-                displayService.showIsExpressLock();
+                displayService.showNoFinish();
             }
         }
 
         public void PayWithCash()
         {
-            clearPurchase();
+            if (sessionService.getSaleFinish())
+            {
+                updateInventory();
+                clearPurchase();
+            } else
+            {
+                displayService.showNoFinish();
+            }
         }
 
         public void StartNewPurchase()
         {
-            CreatePurchaseStoreDTOLookUpModel model = new CreatePurchaseStoreDTOLookUpModel { StoreId = 1 };
-            PurchaseStoreDTO.PurchaseStoreDTOClient client = this.grpcClientConnector.getPurchaseStoreDTOClient();
-            CreatePurchaseStoreDTOModel response = client.CreatePurchaseStore(model);
-            this.sessionService.updatePurchaseId(response.PurchaseId);
-            displayService.showStartPurchase(sessionService.getPurchaseId());
+            if (sessionService.getPurchaseId() == -1)
+            {
+                sessionService.setSaleFinish(false);
+                CreatePurchaseStoreDTOLookUpModel model = new CreatePurchaseStoreDTOLookUpModel { StoreId = 1 };
+                PurchaseStoreDTO.PurchaseStoreDTOClient client = this.grpcClientConnector.getPurchaseStoreDTOClient();
+                CreatePurchaseStoreDTOModel response = client.CreatePurchaseStore(model);
+                this.sessionService.updatePurchaseId(response.PurchaseId);
+                displayService.showStartPurchase(sessionService.getPurchaseId());
+            }
+            else
+            {
+                displayService.purchaseAlreadyExist();
+            }
         }
 
         async private void ButtonListener(IIntermediateObservableCommand<CashboxButton> cashboxButtons)
@@ -145,6 +155,21 @@ namespace cashDeskService.Cashbox
             displayService.showFinishPurchase();
             this.sessionService.updatePurchaseId(-1);
             this.sessionService.clearScannedProduct();
+        }
+
+        private void updateInventory()
+        {
+            List<ProductStoreDTOLookUpModel> products = new List<ProductStoreDTOLookUpModel>();
+            foreach (var scannedProduct in sessionService.getScannedProducts())
+            {
+                ProductStoreDTOLookUpModel product = new ProductStoreDTOLookUpModel();
+                product.Id = scannedProduct.Id;
+                products.Add(product);
+            }
+            UpdatePurchaseStoreDTOLookUpModel data = new UpdatePurchaseStoreDTOLookUpModel();
+            data.PurchaseId = sessionService.getPurchaseId();
+            data.ProductStoreDTOLookUpModel.AddRange(products);
+            UpdatePurchaseStoreDTOModel responseUpdate = this.grpcClientConnector.getPurchaseStoreDTOClient().UpdatePurchaseStore(data);
         }
     }
 }

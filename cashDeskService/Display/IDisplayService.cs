@@ -16,5 +16,11 @@ namespace cashDeskService.Display
 
         void changeExpressCheckOut(Boolean expressCheckOut);
         void showIsExpressLock();
+
+        void showNoFinish();
+
+        void showNoPay();
+
+        void purchaseAlreadyExist();
     }
 }
