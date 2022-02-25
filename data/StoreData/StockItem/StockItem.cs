@@ -9,7 +9,7 @@ namespace data.StoreData
         public int MinStock { get; set; }
         public int MaxStock { get; set; }
         public virtual Product Product { get; set; }
-        public virtual ExchangeStatus ExchangeStatus { get; set; }
+        public ExchangeStatus? ExchangeStatus { get; set; }
     }
 
     public class UpdateStockItemPrice
