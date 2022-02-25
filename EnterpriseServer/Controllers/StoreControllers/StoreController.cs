@@ -26,5 +26,13 @@ namespace EnterpriseServer.Controllers
             List<StockItem> items = storeService.getStockItemByStore(null, storeId);
             return items;
         }
+
+        [HttpGet]
+        [Route("/sales")]
+        public List<ProductSale> GetSales(int storeId)
+        {
+            List<ProductSale> items = storeService.getProductSales(null, storeId);
+            return items;
+        }
     }
 }
