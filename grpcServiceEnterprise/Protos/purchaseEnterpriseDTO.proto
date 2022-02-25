@@ -30,13 +30,6 @@ message UpdatePurchaseEnterpriseDTOModel {
 	repeated ProductEnterpriseDTOModel ProductEnterpriseDTOModel = 3;
 }
 
-
-/*message ProductSaleEnterpriseDTOModel {
-	int32 Id = 1;
-	ProductEnterpriseDTOModel ProductEnterpriseDTOModel = 2;
-	double salePrice = 3;
-}*/
-
 message ProductEnterpriseDTOLookUpModel {
 	int32 Id = 1;
 }

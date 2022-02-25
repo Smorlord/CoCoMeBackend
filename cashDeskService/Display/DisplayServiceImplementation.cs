@@ -40,6 +40,21 @@ namespace cashDeskService.Display
             displayControllerClient.SetDisplayText($"Kein Einkauf gefunden, bitte drücken Sie erst den Button 'Start New Sale' ");
         }
 
+        public void showNoFinish()
+        {
+            displayControllerClient.SetDisplayText($"Der Einkauf muss erst mit 'Sale Finish' abgeschlossen werden, um bezahlen zu können.");
+        }
+
+        public void showNoPay()
+        {
+            displayControllerClient.SetDisplayText($"Der Einkauf wurde geschlossen, erst bezahlen, um einen neuen Einkauf zu starten.");
+        }
+
+        public void purchaseAlreadyExist()
+        {
+            displayControllerClient.SetDisplayText($"Es existiert bereits ein Einkauf, beenden Sie diesen erst.");
+        }
+
         public void showStartPurchase(int saleId)
         {
             displayControllerClient.SetDisplayText($"Einkauf {saleId} gestartet, bitte Items scannen");

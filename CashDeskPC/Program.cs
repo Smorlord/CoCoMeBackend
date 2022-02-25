@@ -44,12 +44,6 @@ app.Services.GetRequiredService<IDisplayService>().init();
 app.Services.GetRequiredService<IPrinterService>().init();
 app.Services.GetRequiredService<ISessionService>().init();
 
-/*using var channel123 = GrpcChannel.ForAddress("https://localhost:7134");
-var client123 = new ProductScannedDTO.ProductScannedDTOClient(channel123);
-var reply123 = client123.GetProductScannedDTOInfo(
-                    new ProductScannedDTOLookUpModel { Barcode = 1111 });
-Console.WriteLine("CashDesk Product: " + reply123);*/
-
 app.Run();
 
 

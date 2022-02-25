@@ -38,12 +38,6 @@ app.MapGet("/", () => "Communication with gRPC endpoints must be made through a 
 
 app.Services.GetRequiredService<IGrpcClientConnector>().connect();
 
-// The port number must match the port of the gRPC server.
-/*using var channel = GrpcChannel.ForAddress("https://localhost:7244");
-var client = new SaleEnterpriseDTO.SaleEnterpriseDTOClient(channel);
-var reply = client.CreateSaleEnterprise(
-                    new CreateSaleEnterpriseDTOLookUpModel { StoreId = 1 });
-Console.WriteLine("Sale ID: " + reply);*/
 
 app.Run();
 

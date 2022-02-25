@@ -36,13 +36,18 @@ namespace cashDeskService.BarcodeScanner
         {
             if (sessionService.getPurchaseId() != -1)
             {
-                if ((sessionService.getExpressCheckOut() && sessionService.getScannedProducts().Count() < 7) || !sessionService.getExpressCheckOut())
+                if (!sessionService.getSaleFinish())
                 {
-                    ProductScannedDTO.ProductScannedDTOClient client = grpcClientConnector.getProductScannedDTOClient();
-                    ProductScannedDTOModel response = client.GetProductScannedDTOInfo(new ProductScannedDTOLookUpModel { Barcode = barcode, StoreId = sessionService.getStoreId() });
-                    displayService.showItemInDisplay(response);
-
-                    sessionService.addScannedProduct(response);
+                    if ((sessionService.getExpressCheckOut() && sessionService.getScannedProducts().Count() < 7) || !sessionService.getExpressCheckOut())
+                    {
+                        ProductScannedDTO.ProductScannedDTOClient client = grpcClientConnector.getProductScannedDTOClient();
+                        ProductScannedDTOModel response = client.GetProductScannedDTOInfo(new ProductScannedDTOLookUpModel { Barcode = barcode, StoreId = sessionService.getStoreId() });
+                        displayService.showItemInDisplay(response);
+                        sessionService.addScannedProduct(response);
+                    }
+                } else
+                {
+                    displayService.showNoPay();
                 }
             } else
             {
